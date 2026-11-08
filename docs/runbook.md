@@ -69,6 +69,17 @@ workflows succeed on the `deploy` commit that pins it.
 If the public repository changes ownership of a path (see **add-path**), release
 `FindAny/ghfind` first, then the component that relies on it.
 
+**Release order when removing or renaming things.** The hub workflows call scripts
+and `package.json` commands from ghfind-server, and a `deploy` commit runs the
+workflows of the latest *released* hub. So when a server change removes or renames
+something a hub workflow uses, update the hub, merge it and release it first. Only
+then release the server. Otherwise CI on `deploy` fails and nothing deploys. (This
+happened on 2026-11-08: server v1.0.5 removed `smoke:backend:*` while hub v1.0.1
+still ran it. Fixed by hub v1.0.2.) Component CI enforces this: on every private-repo
+PR, `.github/compose/check-hub-contract.mjs` fails if a `pnpm` script or `scripts/`
+file that a hub workflow calls is missing. It also runs ci.yml's Application-checks
+`node:test` suites, which include the production migration approval guard.
+
 ### compose
 
 `Compose release` (Actions → Compose release → Run workflow, or `gh workflow run`) has

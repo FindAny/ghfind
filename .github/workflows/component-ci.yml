@@ -94,6 +94,12 @@ jobs:
             echo "::error::Dependencies differ from ghfind-server's pnpm-lock.yaml. Dependency changes need a matching lockfile update in FindAny/ghfind-server."
             exit 1
           fi
+      - name: Hub contract (scripts the deploy workflows call, release contract tests)
+        working-directory: workspace
+        run: |
+          # The workspace is the latest hub release; releases before the check have no script.
+          if [ -f .github/compose/check-hub-contract.mjs ]; then node .github/compose/check-hub-contract.mjs --run-tests
+          else echo "::notice::hub ${{ steps.public.outputs.ref }} predates the hub contract check"; fi
       - name: Verify release versions against ghfind-server history
         if: inputs.component == 'ghfind-server'
         working-directory: self

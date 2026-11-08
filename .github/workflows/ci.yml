@@ -64,6 +64,9 @@ jobs:
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Hub contract (every script these workflows call exists)
+        run: node .github/compose/check-hub-contract.mjs
+
       - name: Verify release versions
         # Consistency of config/release-versions.json and the version constants in
         # the assembled workspace. The diff-based rule (a version change must update
