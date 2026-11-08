@@ -91,7 +91,9 @@ ghfind is built from three repositories. This one is public:
   of the private components.
 - **How it ships.** Each repository publishes `vX.Y.Z` releases. The latest verified
   release of all three is assembled into one workspace and deployed to Cloudflare
-  from this repository. Details: [docs/architecture.md](./docs/architecture.md).
+  from this repository. Design: [docs/architecture.md](./docs/architecture.md);
+  procedures: [docs/runbook.md](./docs/runbook.md); Chinese deployment overview:
+  [docs/deployment.zh.md](./docs/deployment.zh.md).
 
 ## Develop the scoring module, SDKs and CLI
 
@@ -109,8 +111,8 @@ go test ./internal/agentcli && go build -o bin/ghfind ./cmd/ghfind
 
 Any formula change updates the TypeScript, Go and Python ports and their shared
 fixtures in the same pull request; see [`scoring/README.md`](./scoring/README.md).
-Pull requests from forks run the scoring CI; the full application suite runs on
-maintainers' branches and on every production release. See
+Pull requests (forks included) run the scoring CI; the full application suite runs
+after merge on `main` and on every production release. See
 [CONTRIBUTING.md](./CONTRIBUTING.md) and [AGENTS.md](./AGENTS.md).
 
 ## Releases

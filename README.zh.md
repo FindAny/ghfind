@@ -86,7 +86,7 @@ ghfind 由三个仓库组成，本仓库公开：
   [`deploy`](https://github.com/FindAny/ghfind/tree/deploy) 分支记录每次生产发布：其中的
   `components.manifest.json` 写明线上使用的 `ghfind` 版本（即评分代码版本），以及两个私有组件的提交。
 - **如何上线。** 三个仓库各自发布 `vX.Y.Z` 版本；三者最新的已验证版本被组装成一个工作区，由本仓库部署到
-  Cloudflare。详见 [docs/architecture.md](./docs/architecture.md)。
+  Cloudflare。设计见 [docs/architecture.md](./docs/architecture.md)，操作手册见 [docs/runbook.md](./docs/runbook.md)，中文部署说明见 [docs/deployment.zh.md](./docs/deployment.zh.md)。
 
 ## 开发评分模块、SDK 与 CLI
 
@@ -103,7 +103,7 @@ go test ./internal/agentcli && go build -o bin/ghfind ./cmd/ghfind
 ```
 
 修改公式时，TypeScript、Go、Python 三端与共享夹具须在同一个 PR 中同步，见
-[`scoring/README.md`](./scoring/README.md)。来自 fork 的 PR 运行评分 CI；完整应用测试在维护者分支和每次生产发布时运行。
+[`scoring/README.md`](./scoring/README.md)。所有 PR（含 fork）运行评分 CI；完整应用测试在合并到 `main` 后及每次生产发布时运行。
 另见 [CONTRIBUTING.md](./CONTRIBUTING.md) 与 [AGENTS.md](./AGENTS.md)。
 
 ## 发布

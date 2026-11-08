@@ -32,8 +32,9 @@ go test ./internal/agentcli
 ```
 
 Run what your change touches and say which checks you ran. CI runs the scoring
-workflow on every pull request; the full application suite runs on maintainers'
-branches and before each production release.
+workflow on every pull request; the full application suite runs
+after merge on `main` and before each production release. Release and deploy
+procedures: [docs/runbook.md](./docs/runbook.md).
 
 ## Scoring changes
 
