@@ -11,6 +11,7 @@
 | 了解三仓库、组装、发布 → 组合 → 部署、凭据与安全模型 | [`docs/architecture.md`](docs/architecture.md) |
 | 发版、组合 / 固定版本、回滚、Feed 切换、故障恢复、App 密钥轮换、本地组装 | [`docs/runbook.md`](docs/runbook.md)（man page 格式，操作以此为准） |
 | 给客户 / 合作方介绍部署方式（中文） | [`docs/deployment.zh.md`](docs/deployment.zh.md) |
+| 跟踪发布到上线、检查线上、只读查询生产 D1 | `.github/compose/release-status.sh`、`probe.sh`、`d1-read.sh`（用法见 runbook SYNOPSIS；等待发布用 `release-status.sh --wait`） |
 | 文件归属（哪个仓库拥有哪个路径） | [`.github/compose/components.json`](.github/compose/components.json)（唯一清单） |
 | 修改 CI/CD | `.github/workflows/`；私有仓库共用 [`component-ci.yml`](.github/workflows/component-ci.yml) / [`component-release.yml`](.github/workflows/component-release.yml)，它们自己的 `ci.yml`/`release.yml` 只是调用方 |
 | 评分模块 | [`scoring/README.md`](scoring/README.md)、[`docs/rfc/2026-10-15-account-scoring.md`](docs/rfc/2026-10-15-account-scoring.md) |
