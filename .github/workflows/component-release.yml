@@ -1,0 +1,98 @@
+name: Component release
+
+# Reusable release workflow for all three repositories. A vX.Y.Z tag on a main
+# commit becomes a verified release only if that exact commit has a successful CI
+# run on main; then the rel/vX.Y.Z marker (what composition trusts) is pushed, the
+# GitHub release is published and composition starts in FindAny/ghfind. Event-driven
+# only: the dispatch is retried, and if it still fails the release job fails.
+#
+#   on: { push: { tags: ["v[0-9]+.[0-9]+.[0-9]+"] } }
+#   permissions: { contents: write, actions: write }
+#   jobs:
+#     release:
+#       uses: FindAny/ghfind/.github/workflows/component-release.yml@main
+#       with: { app-id: "${{ vars.RELEASE_BOT_APP_ID }}" }
+#       secrets: inherit
+
+on:
+  workflow_call:
+    inputs:
+      ci-workflow:
+        description: The caller's CI workflow file that must be green on main for the tagged commit.
+        required: false
+        type: string
+        default: ci.yml
+      app-id:
+        description: Release bot App ID; required outside FindAny/ghfind to start composition there.
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  release:
+    name: Verify and publish ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.ref_name }}
+      CI_WORKFLOW: ${{ inputs.ci-workflow }}
+    steps:
+      - name: Require a vX.Y.Z tag
+        run: echo "$TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$' || { echo "::error::$TAG is not a vX.Y.Z tag"; exit 1; }
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require the tagged commit on main with green CI
+        id: verify
+        run: |
+          set -euo pipefail
+          sha="$(git rev-parse "$TAG^{commit}")"
+          git merge-base --is-ancestor "$sha" origin/main || { echo "::error::$TAG ($sha) is not on main"; exit 1; }
+          for attempt in $(seq 1 120); do
+            state="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$CI_WORKFLOW/runs?head_sha=$sha&event=push&per_page=50" \
+              --jq '[.workflow_runs[] | select(.head_branch == "main")] | if any(.conclusion == "success") then "success" elif any(.status != "completed") then "pending" elif length == 0 then "missing" else "failure" end')"
+            case "$state" in
+              success) echo "sha=$sha" >> "$GITHUB_OUTPUT"; echo "CI passed for $sha"; exit 0 ;;
+              failure) echo "::error::CI failed on main for $sha; fix main and tag a new version"; exit 1 ;;
+              *) echo "CI for $sha is $state; waiting ($attempt/120)"; sleep 30 ;;
+            esac
+          done
+          echo "::error::timed out waiting for CI on $sha"; exit 1
+      - name: Mark the release as verified (rel/${{ github.ref_name }})
+        run: |
+          set -euo pipefail
+          git tag -f "rel/$TAG" "${{ steps.verify.outputs.sha }}"
+          git push -f origin "refs/tags/rel/$TAG"
+      - name: Publish the GitHub release
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then echo "release $TAG already exists"
+          else gh release create "$TAG" --verify-tag --generate-notes --title "${GITHUB_REPOSITORY#*/} $TAG"; fi
+      - name: Mint a token to start composition in FindAny/ghfind
+        id: token
+        if: github.repository != 'FindAny/ghfind'
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ inputs.app-id }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          owner: FindAny
+          repositories: ghfind
+          permission-actions: write
+      - name: Compose the latest releases for deployment
+        env:
+          DISPATCH_TOKEN: ${{ steps.token.outputs.token || github.token }}
+        run: |
+          # Event-driven only (no polling): retry, then fail this release loudly.
+          for attempt in 1 2 3 4 5; do
+            if GH_TOKEN="$DISPATCH_TOKEN" gh workflow run compose-release.yml --repo FindAny/ghfind --ref main -f "trigger=$GITHUB_REPOSITORY $TAG"; then
+              echo "composition started for $GITHUB_REPOSITORY $TAG"; exit 0
+            fi
+            echo "dispatch attempt $attempt failed; retrying"; sleep $((attempt * 15))
+          done
+          echo "::error::Could not start composition in FindAny/ghfind. The release is verified (rel/$TAG) but not deployed; an owner must run compose-release.yml."
+          exit 1

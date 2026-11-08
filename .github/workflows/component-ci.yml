@@ -1,0 +1,135 @@
+name: Component CI
+
+# Reusable CI for the private components (ghfind-server, ghfind-frontend). The
+# caller's checkout is assembled into the workspace rooted at FindAny/ghfind (latest
+# verified release), together with the other component's latest verified release,
+# and checked as a whole. Kept to one job: private Actions minutes are limited, and
+# the full suite runs here on every composed deploy commit before production.
+#
+#   jobs:
+#     ci:
+#       uses: FindAny/ghfind/.github/workflows/component-ci.yml@main
+#       with: { component: ghfind-server, app-id: "${{ vars.RELEASE_BOT_APP_ID }}", public-ref: "${{ vars.COMPOSE_PUBLIC_REF }}" }
+#       secrets: inherit
+
+on:
+  workflow_call:
+    inputs:
+      component:
+        description: ghfind-server or ghfind-frontend (the caller).
+        required: true
+        type: string
+      app-id:
+        description: Release bot App ID (vars.RELEASE_BOT_APP_ID).
+        required: true
+        type: string
+      public-ref:
+        description: FindAny/ghfind ref to build against (default latest verified release, then main).
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: ${{ inputs.component == 'ghfind-frontend' && 'Frontend checks' || 'Workspace checks' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      CI: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
+      COMPONENT: ${{ inputs.component }}
+    steps:
+      - name: Validate the caller
+        run: |
+          case "$COMPONENT" in ghfind-server) other=ghfind-frontend ;; ghfind-frontend) other=ghfind-server ;; *) echo "::error::unknown component $COMPONENT"; exit 1 ;; esac
+          test "$GITHUB_REPOSITORY" = "FindAny/$COMPONENT" || { echo "::error::$GITHUB_REPOSITORY is not FindAny/$COMPONENT"; exit 1; }
+          echo "OTHER=$other" >> "$GITHUB_ENV"
+      - name: Mint a read-only token for the other component
+        id: token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ inputs.app-id }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          owner: FindAny
+          repositories: ${{ env.OTHER }}
+          permission-contents: read
+      - name: Resolve the public workspace root (FindAny/ghfind)
+        id: public
+        env:
+          PINNED: ${{ inputs.public-ref }}
+        run: |
+          ref="${PINNED:-$(git ls-remote --tags --refs https://github.com/FindAny/ghfind.git 'rel/v*' | awk '{print $2}' | sed 's#^refs/tags/rel/##' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1 || true)}"
+          echo "ref=${ref:-main}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: FindAny/ghfind
+          ref: ${{ steps.public.outputs.ref }}
+          path: workspace
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          path: self
+          fetch-depth: 0   # ghfind-server's release-version diff rule compares with the base commit
+          persist-credentials: false
+      - name: Assemble the workspace
+        working-directory: workspace
+        env:
+          COMPOSE_TOKEN: ${{ steps.token.outputs.token }}
+        run: .github/compose/assemble.sh --dir "$COMPONENT=$GITHUB_WORKSPACE/self"
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: workspace/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: workspace/pnpm-lock.yaml
+      - name: Install locked dependencies
+        working-directory: workspace
+        run: |
+          if ! pnpm install --frozen-lockfile; then
+            echo "::error::Dependencies differ from ghfind-server's pnpm-lock.yaml. Dependency changes need a matching lockfile update in FindAny/ghfind-server."
+            exit 1
+          fi
+      - name: Verify release versions against ghfind-server history
+        if: inputs.component == 'ghfind-server'
+        working-directory: self
+        env:
+          BASE_REF: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          ln -sfn ../workspace/node_modules node_modules
+          if [ -n "$BASE_REF" ] && [ "$BASE_REF" != "0000000000000000000000000000000000000000" ] && git cat-file -e "${BASE_REF}^{commit}" 2>/dev/null; then
+            ./node_modules/.bin/tsx scripts/check-release-versions.mts --base-ref "$BASE_REF"
+          else
+            ./node_modules/.bin/tsx scripts/check-release-versions.mts
+          fi
+      - name: Frontend stack rules
+        if: inputs.component == 'ghfind-frontend'
+        working-directory: workspace
+        run: pnpm frontend-stack:check
+      - uses: actions/setup-go@v5
+        if: inputs.component == 'ghfind-server'
+        with:
+          go-version-file: workspace/go.mod
+          cache-dependency-path: workspace/go.sum
+      - name: Type checks and lint
+        working-directory: workspace
+        run: |
+          pnpm typecheck
+          if [ "$COMPONENT" = ghfind-frontend ]; then
+            pnpm --filter @ghfind/web typecheck
+            pnpm --filter @ghfind/router typecheck
+          fi
+          pnpm lint
+      - name: Tests
+        working-directory: workspace
+        run: |
+          pnpm test
+          if [ "$COMPONENT" = ghfind-server ]; then go test ./...; fi
+      - name: Build the Astro site
+        if: inputs.component == 'ghfind-frontend'
+        working-directory: workspace
+        run: pnpm --filter @ghfind/web build

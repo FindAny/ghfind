@@ -2,7 +2,7 @@
 
 本仓库是 ghfind 的公开仓库：评分模块、SDK、CLI，以及**全部 CI/CD 与生产部署工作流**（部署中枢）。
 完整产品规则（业务规则、Frontend Stack Rules 等）在私有仓库 `ghfind-server` 的 `AGENTS.md`；组装后的工作区根目录使用那一份。
-三仓库模型见 [`docs/architecture.md`](docs/architecture.md)。
+三仓库模型见 [`docs/architecture.md`](docs/architecture.md)，发布 / 回滚 / 恢复操作见 [`docs/runbook.md`](docs/runbook.md)。
 
 ## 规则
 
