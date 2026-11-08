@@ -73,6 +73,11 @@ deploy-cf-production.yml + deploy-apps-production.yml (workflow_run, branch depl
   `compose-release.yml`.
 - Composition is a no-op when `deploy` already pins the latest verified releases.
 - `repair-prod-web.yml` rebuilds the paused web anchor from the `deploy` head after a failed production run.
+- **One CI/CD definition.** The private repositories' `ci.yml` and `release.yml` are thin
+  callers of the reusable [`component-ci.yml`](../.github/workflows/component-ci.yml) and
+  [`component-release.yml`](../.github/workflows/component-release.yml) here, so the
+  release gate, marker tags and composition dispatch are identical in all three
+  repositories.
 - Feed operations workflows (`feed-operator`, `feed-governance`, `feed-staging`, `feed-production-pause`, …) are dispatched on `main` and assemble the latest verified releases. Staging from `codex/feed-*` branches is retired: the release bot key is only available on `main` and `deploy`.
 
 ### Feed releases
@@ -83,8 +88,7 @@ the last successful cutover (`feed/released` tag). When nothing changed, the sit
 release deploys the Web in the live Feed gateway mode and never touches the runtime;
 otherwise the full cutover runs, after a settle gate that waits for Cloudflare
 container placements to pick up the new image. Production and apps releases are
-serialized on core D1 migrations. Details: `docs/architecture/repositories.md` in
-ghfind-server.
+serialized on core D1 migrations. Operator details: [runbook.md → feed](./runbook.md#feed).
 
 ## Pull requests
 
@@ -94,7 +98,8 @@ forks: **Scoring parity (TS / Go / Python) and boundary**, **JavaScript SDK** an
 The full application suite (`ci.yml`) needs the release bot, so it runs after
 merge on `main` and again on every `deploy` commit, where deploys require it.
 Tag a release only once `main` CI is green; `release.yml` enforces this.
-- The deploy workflows act only on successful push CI of the `deploy` branch, and their exact-commit CI evidence (`scripts/feed-ci-evidence.mjs` in `ghfind-server`) is verified before any write. `scripts/check-cf-release-workflow.mts` keeps that contract, including `require-manifest` assembly in every production job, under test.
+
+The deploy workflows act only on successful push CI of the `deploy` branch, and their exact-commit CI evidence (`scripts/feed-ci-evidence.mjs` in `ghfind-server`) is verified before any write. `scripts/check-cf-release-workflow.mts` keeps that contract, including `require-manifest` assembly in every production job, under test.
 
 ## Credentials
 
@@ -129,24 +134,5 @@ repositories hold no deploy credentials.
 
 ## Runbook
 
-**Cut a release.** In the component's repository: merge to `main`, wait for CI, then
-`git tag vX.Y.Z && git push origin vX.Y.Z`. Watch `Release` there, then
-`Compose release`, `CI` (on `deploy`) and the deploy workflows here.
-
-**Pin or roll back.** Run `Compose release` (Actions → Compose release → Run
-workflow) with the tags to deploy in `ghfind`, `ghfind_server` and `ghfind_frontend`,
-and `force` if `deploy` already has them. Use `dry_run` to preview. For an immediate
-Worker rollback, follow the Cloudflare runbook in `ghfind-server`
-(`docs/operations/cloudflare-deployment-runbook.md`).
-
-**A composition failed.** Read the `Compose release` log: a missing verified release
-is reported as a notice; an assembly conflict names the file owned twice (fix
-ownership in `components.json` or remove the duplicate in the owning repository, then
-release again). If CI on `deploy` fails, nothing is deployed; fix forward with a new
-release or recompose older tags.
-
-**Add a new top-level path.** Decide the owner. For the frontend, add it to the
-`ghfind-frontend` entry's `paths` in `.github/compose/components.json` and to
-`.github/compose-paths.txt` in `ghfind-frontend`; for the server, nothing is needed
-(it contributes all tracked files). Release this repository before releasing a
-component that depends on the new ownership.
+Procedures (release, compose, rollback, Feed cutover, recovery, key rotation, local
+assembly) are in [runbook.md](./runbook.md).
