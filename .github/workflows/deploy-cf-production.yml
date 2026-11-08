@@ -68,11 +68,72 @@ jobs:
             ${{ runner.temp }}/feed-ci-evidence.json
             ${{ runner.temp }}/feed-github-protection.json
           if-no-files-found: error
-  deploy:
-    name: Deploy verified Go Feed and cut over the production gateway
+  plan:
+    name: Plan the Feed release
     needs: [authorize]
     if: needs.authorize.outputs.current == 'true'
+    runs-on: ubuntu-latest
+    # The release bot key is only available in protected environments (main/deploy).
+    environment: release
+    timeout-minutes: 5
+    outputs:
+      feed_release: ${{ steps.plan.outputs.feed_release }}
+      feed_input_hash: ${{ steps.plan.outputs.feed_input_hash }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Assemble workspace (ghfind-server + ghfind-frontend)
+        uses: ./.github/actions/assemble
+        with:
+          app-id: ${{ vars.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          require-manifest: true
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Compare Feed inputs with the last successful cutover
+        id: plan
+        env:
+          # Owner override: set the repository variable FEED_RELEASE_MODE=always to force a cutover.
+          FEED_RELEASE_MODE: ${{ vars.FEED_RELEASE_MODE || 'auto' }}
+        run: |
+          set -euo pipefail
+          hash="$(node scripts/feed-release-plan.mjs hash | node -pe 'JSON.parse(require("fs").readFileSync(0,"utf8")).hash')"
+          released=""
+          if git fetch -q --no-tags origin "+refs/tags/feed/released:refs/tags/feed/released" 2>/dev/null; then
+            released="$(git for-each-ref refs/tags/feed/released --format='%(contents)' | sed -n 's/^feed-input-hash: \([a-f0-9]\{64\}\)$/\1/p' | head -1)"
+          fi
+          decision="$(node scripts/feed-release-plan.mjs decide "$hash" "${released:--}" "$FEED_RELEASE_MODE")"
+          echo "$decision"
+          echo "feed_input_hash=$hash" >> "$GITHUB_OUTPUT"
+          echo "feed_release=$(node -pe 'JSON.parse(process.argv[1]).feedRelease' "$decision")" >> "$GITHUB_OUTPUT"
+          { echo "### Feed release plan"; echo; echo "- Feed inputs: \`${hash:0:16}\`"; echo "- last successful cutover: \`${released:0:16}\`"; echo "- decision: \`$decision\`"; } >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    name: Deploy verified Go Feed and cut over the production gateway
+    needs: [authorize, plan]
+    # Only when the Feed inputs changed (or FEED_RELEASE_MODE=always); otherwise the
+    # site job releases the Web in the live gateway mode without touching the runtime.
+    if: needs.authorize.outputs.current == 'true' && needs.plan.outputs.feed_release == 'true'
     environment: Production
+    # Production and apps releases both apply core D1 migrations; never concurrently.
+    concurrency:
+      group: production-d1-writers
+      cancel-in-progress: false
+    permissions:
+      contents: write   # record the feed/released tag after a successful cutover
+      actions: read
+    outputs:
+      # The Web (legacy SCORE backend) is live at this release once a paused Web was
+      # deployed and verified, even if the Feed cutover fails afterwards.
+      web_released: ${{ steps.pause-web.outputs.released == 'true' || steps.paused.outputs.version != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     env:
@@ -186,12 +247,14 @@ jobs:
         if: steps.current.outputs.current == 'true'
         run: node node_modules/@opennextjs/cloudflare/dist/cli/index.js populateCache remote --config platform/runtime/wrangler.web.production.generated.json --cacheChunkSize 10
       - name: Pause an already active Go gateway before replacing its runtime
+        id: pause-web
         if: steps.current.outputs.current == 'true' && (steps.resources.outputs.backend == 'go')
         run: |
           set -euo pipefail
           platform/runtime/node_modules/.bin/wrangler deploy --config platform/runtime/wrangler.web.production.generated.json --keep-vars --secrets-file "$RUNNER_TEMP/feed-web-secrets.json" --tag "production-$RELEASE_SHA" --message "Pause Go writes for compatible runtime update" 2>&1 | tee "$RUNNER_TEMP/feed-production-evidence/web-update-paused-deploy.log"
           version_id="$(node scripts/feed-production-release.mjs web-version-id "$RUNNER_TEMP/feed-production-evidence/web-update-paused-deploy.log")"
           node scripts/feed-production-release.mjs web-verify "$RELEASE_SHA" paused "$RUNNER_TEMP/feed-production-evidence/web-update-paused.json" ${version_id:+"$version_id"}
+          echo "released=true" >> "$GITHUB_OUTPUT"
           sleep 35
       - name: Detach only the owned consumers before installing off-mode runtime
         if: steps.current.outputs.current == 'true'
@@ -217,7 +280,7 @@ jobs:
             runtime_attempt=$((runtime_attempt + 1))
             sleep 10
           done
-          timeout --signal=TERM --kill-after=5s 310s node scripts/feed-production-rollout.mjs ops/feed-production-manifest.json "${{ steps.image.outputs.reference }}" "$RUNNER_TEMP/feed-production-evidence/applications-before-off.json" "$RUNNER_TEMP/feed-production-evidence/off-rollout.json"
+          timeout --signal=TERM --kill-after=5s 610s node scripts/feed-production-rollout.mjs ops/feed-production-manifest.json "${{ steps.image.outputs.reference }}" "$RUNNER_TEMP/feed-production-evidence/applications-before-off.json" "$RUNNER_TEMP/feed-production-evidence/off-rollout.json"
           # DO code replacement does not replace an already-running process.
           # Only after pause + consumer detachment, replace each fixed actor and
           # prove its new off identity before the normal full readiness gate.
@@ -293,6 +356,17 @@ jobs:
           SMOKE_FACET_TYPE: language
           SMOKE_FACET_VALUE: TypeScript
         run: pnpm smoke:deployment
+      - name: Record the released Feed inputs (feed/released)
+        if: steps.current.outputs.current == 'true' && steps.smoke.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FEED_INPUT_HASH: ${{ needs.plan.outputs.feed_input_hash }}
+        run: |
+          set -euo pipefail
+          test -n "$FEED_INPUT_HASH"
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            tag -f -a feed/released -m "feed-input-hash: $FEED_INPUT_HASH" -m "release: $RELEASE_SHA" "$RELEASE_SHA"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" refs/tags/feed/released
       - name: Contain failed cutover using the verified Go-only paused anchor
         if: steps.current.outputs.current == 'true' && (always() && steps.paused.outputs.version != '' && steps.admission.outputs.started == 'true' && steps.smoke.outcome != 'success')
         timeout-minutes: 6
@@ -315,10 +389,156 @@ jobs:
         if: steps.current.outputs.current == 'true' && (always())
         run: rm -f "$RUNNER_TEMP/feed-web-secrets.json" "$RUNNER_TEMP/feed-runtime-secrets.json" "$RUNNER_TEMP/feed-adapter-secrets.json"
 
+
+  site:
+    name: Deploy the site in the live Feed gateway mode (Feed runtime untouched)
+    needs: [authorize, plan]
+    if: needs.authorize.outputs.current == 'true' && needs.plan.outputs.feed_release == 'false'
+    environment: Production
+    concurrency:
+      group: production-d1-writers
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      WRANGLER_SEND_METRICS: "false"
+      NEXT_TELEMETRY_DISABLED: "1"
+      RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+      FEED_ASSESSMENT_CARRYOVER: ops/feed-production-assessment-carryover.json
+      EXPECTED_ACCOUNT_ID: 8f19bebe359e4ec1a24c68c5f49c1584
+      CLOUDFLARE_ACCOUNT_ID: 8f19bebe359e4ec1a24c68c5f49c1584
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+      FEED_GATEWAY_SECRET: ${{ secrets.FEED_GATEWAY_SECRET }}
+      FEED_SIGNING_SECRET: ${{ secrets.FEED_SIGNING_SECRET }}
+      FEED_BRIDGE_SECRET: ${{ secrets.FEED_BRIDGE_SECRET }}
+      FEED_RUNTIME_ADMIN_SECRET: ${{ secrets.FEED_RUNTIME_ADMIN_SECRET }}
+      FEED_EXECUTOR_SECRET: ${{ secrets.FEED_EXECUTOR_SECRET }}
+      FEED_DELIVERY_SECRET: ${{ secrets.FEED_DELIVERY_SECRET }}
+      FEED_SOURCE_SECRET: ${{ secrets.FEED_SOURCE_SECRET }}
+      FEED_OPERATOR_SECRET: ${{ secrets.FEED_OPERATOR_SECRET }}
+      MOSOO_API_TOKEN: ${{ secrets.MOSOO_API_TOKEN }}
+      PROJECT_ANALYSIS_RECONCILE_SECRET: ${{ secrets.PROJECT_ANALYSIS_RECONCILE_SECRET }}
+      MOSOO_API_BASE: ${{ vars.MOSOO_API_BASE }}
+      MOSOO_PROJECT_AGENT_ID: ${{ vars.MOSOO_PROJECT_AGENT_ID }}
+      MOSOO_PROJECT_USER_ID: ${{ vars.MOSOO_PROJECT_USER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Assemble workspace (ghfind-server + ghfind-frontend)
+        uses: ./.github/actions/assemble
+        with:
+          app-id: ${{ vars.RELEASE_BOT_APP_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_PRIVATE_KEY }}
+          require-manifest: true
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Reject a superseded release before any mutation
+        id: current
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/deploy" --jq .object.sha)" != "$RELEASE_SHA" ]; then
+            echo "::notice::superseded"
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "current=true" >> "$GITHUB_OUTPUT"
+          test "$CLOUDFLARE_ACCOUNT_ID" = "$EXPECTED_ACCOUNT_ID"
+      - name: Install locked dependencies
+        if: steps.current.outputs.current == 'true'
+        run: |
+          pnpm install --frozen-lockfile
+          npm ci --prefix platform/runtime
+          pnpm -C platform/feed install --frozen-lockfile
+      - name: Validate the pinned production manifest and read the live Feed gateway mode
+        id: mode
+        if: steps.current.outputs.current == 'true'
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/feed-production-evidence"
+          node scripts/feed-platform-production.mjs validate ops/feed-production-manifest.json
+          node scripts/feed-production-release.mjs prepare "$RUNNER_TEMP"
+          mode="$(node scripts/feed-production-release.mjs web-mode "$RUNNER_TEMP/feed-production-evidence/web-mode-before.json")"
+          previous="$(node -pe 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).workerVersionId' "$RUNNER_TEMP/feed-production-evidence/web-mode-before.json")"
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "previous=$previous" >> "$GITHUB_OUTPUT"
+          # Render the Web in exactly the live mode: a site release never opens or pauses the Feed.
+          node scripts/feed-production-release.mjs web "$RELEASE_SHA" "$mode"
+          echo "### Site release keeps the Feed gateway \`$mode\` (runtime untouched)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Build the real Web without runtime secrets or local dotenv files
+        if: steps.current.outputs.current == 'true'
+        timeout-minutes: 15
+        run: node scripts/feed-production-release.mjs build
+      - name: Apply and verify explicitly approved core D1 migrations
+        if: steps.current.outputs.current == 'true'
+        run: |
+          set -euo pipefail
+          release_config="$(node scripts/feed-production-release.mjs schema "$RUNNER_TEMP/approved-feed-production-schema")"
+          platform/runtime/node_modules/.bin/wrangler d1 migrations apply ghfind --remote --config "$release_config"
+      - name: Populate new build cache before replacing the public Web
+        if: steps.current.outputs.current == 'true'
+        run: node node_modules/@opennextjs/cloudflare/dist/cli/index.js populateCache remote --config platform/runtime/wrangler.web.production.generated.json --cacheChunkSize 10
+      - name: Deploy the Web in the live gateway mode
+        id: web
+        if: steps.current.outputs.current == 'true'
+        env:
+          MODE: ${{ steps.mode.outputs.mode }}
+        run: |
+          set -euo pipefail
+          echo "attempted=true" >> "$GITHUB_OUTPUT"
+          platform/runtime/node_modules/.bin/wrangler deploy --config platform/runtime/wrangler.web.production.generated.json --keep-vars --secrets-file "$RUNNER_TEMP/feed-web-secrets.json" --tag "production-$RELEASE_SHA" 2>&1 | tee "$RUNNER_TEMP/feed-production-evidence/web-site-deploy.log"
+          version_id="$(node scripts/feed-production-release.mjs web-version-id "$RUNNER_TEMP/feed-production-evidence/web-site-deploy.log")"
+          node scripts/feed-production-release.mjs web-verify "$RELEASE_SHA" "$MODE" "$RUNNER_TEMP/feed-production-evidence/web-site.json" ${version_id:+"$version_id"}
+          after="$(node scripts/feed-production-release.mjs web-mode "$RUNNER_TEMP/feed-production-evidence/web-mode-after.json")"
+          test "$after" = "$MODE"
+      - name: Bounded public production smoke
+        if: steps.current.outputs.current == 'true'
+        id: smoke
+        env:
+          SMOKE_BASE_URL: https://ghfind.beiming1201.workers.dev
+          SMOKE_EXPECTED_ORIGIN: https://ghfind.com
+          SMOKE_CANARY_HANDLE: octocat
+          SMOKE_FACET_TYPE: language
+          SMOKE_FACET_VALUE: TypeScript
+        run: pnpm smoke:deployment
+      - name: Roll back the Web if the site release failed
+        if: steps.current.outputs.current == 'true' && (always() && steps.web.outputs.attempted == 'true' && steps.smoke.outcome != 'success' && steps.mode.outputs.previous != '')
+        timeout-minutes: 6
+        env:
+          PREVIOUS: ${{ steps.mode.outputs.previous }}
+          MODE: ${{ steps.mode.outputs.mode }}
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=5s 120s platform/runtime/node_modules/.bin/wrangler rollback "$PREVIOUS" --name ghfind --message "Site release failed; restore the previous Web" --yes
+          restored="$(node scripts/feed-production-release.mjs web-mode "$RUNNER_TEMP/feed-production-evidence/web-mode-restored.json")"
+          test "$restored" = "$MODE"
+      - name: Preserve nonsecret actual evidence, including failures
+        if: steps.current.outputs.current == 'true' && (always())
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-production-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/feed-production-evidence/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Remove temporary plaintext role credentials
+        if: steps.current.outputs.current == 'true' && (always())
+        run: rm -f "$RUNNER_TEMP/feed-web-secrets.json" "$RUNNER_TEMP/feed-runtime-secrets.json" "$RUNNER_TEMP/feed-adapter-secrets.json"
+
   deploy-bot:
     name: Deploy bot after its legacy SCORE backend
-    needs: [deploy]
-    if: ${{ github.repository == 'FindAny/ghfind' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'deploy' && github.event.workflow_run.repository.full_name == 'FindAny/ghfind' }}
+    needs: [deploy, site]
+    # !cancelled(): one of deploy/site is always skipped. The bot follows its legacy
+    # SCORE backend: a site release, a completed cutover, or a cutover that already
+    # verified the paused Web at this release before failing.
+    if: ${{ !cancelled() && (needs.site.result == 'success' || needs.deploy.result == 'success' || needs.deploy.outputs.web_released == 'true') && github.repository == 'FindAny/ghfind' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'deploy' && github.event.workflow_run.repository.full_name == 'FindAny/ghfind' }}
     environment: Production
     concurrency:
       group: ghfind-bot-production

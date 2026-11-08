@@ -30,8 +30,10 @@ jobs:
     # credentials below live there (branch policy only, no manual gate).
     environment: Production
     timeout-minutes: 20
+    # Shared with the production release jobs: both apply core D1 migrations, and two
+    # concurrent `wrangler d1 migrations apply` runs could race on the same migration.
     concurrency:
-      group: apps-production-deploy
+      group: production-d1-writers
       cancel-in-progress: false
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
@@ -89,6 +91,9 @@ jobs:
       - name: Deploy ghfind-api entrypoints before coord
         if: steps.current.outputs.current == 'true'
         run: |
+          # apps/api/wrangler.jsonc comes from ghfind-server (assembled, untracked
+          # here), so restore it from a copy rather than with git.
+          cp apps/api/wrangler.jsonc "$RUNNER_TEMP/api-wrangler.jsonc"
           node <<'NODE'
             const { readFileSync, writeFileSync } = require("node:fs");
             const path = "apps/api/wrangler.jsonc";
@@ -98,7 +103,7 @@ jobs:
             writeFileSync(path, stripped);
           NODE
           pnpm --filter @ghfind/api exec wrangler deploy --env production --tag "production-$RELEASE_SHA"
-          git checkout -- apps/api/wrangler.jsonc
+          cp "$RUNNER_TEMP/api-wrangler.jsonc" apps/api/wrangler.jsonc
       - name: Deploy ghfind-coord
         if: steps.current.outputs.current == 'true'
         run: pnpm --filter @ghfind/coord exec wrangler deploy --env production --tag "production-$RELEASE_SHA"

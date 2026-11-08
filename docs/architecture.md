@@ -75,6 +75,17 @@ deploy-cf-production.yml + deploy-apps-production.yml (workflow_run, branch depl
 - `repair-prod-web.yml` rebuilds the paused web anchor from the `deploy` head after a failed production run.
 - Feed operations workflows (`feed-operator`, `feed-governance`, `feed-staging`, `feed-production-pause`, …) are dispatched on `main` and assemble the latest verified releases. Staging from `codex/feed-*` branches is retired: the release bot key is only available on `main` and `deploy`.
 
+### Feed releases
+
+The Feed runtime is released separately from the site. A plan job hashes the
+Feed inputs (image context, runtime Worker, Feed schema) and compares them with
+the last successful cutover (`feed/released` tag). When nothing changed, the site
+release deploys the Web in the live Feed gateway mode and never touches the runtime;
+otherwise the full cutover runs, after a settle gate that waits for Cloudflare
+container placements to pick up the new image. Production and apps releases are
+serialized on core D1 migrations. Details: `docs/architecture/repositories.md` in
+ghfind-server.
+
 ## Pull requests
 
 Pull requests to `main` run `scoring.yml`, which needs no secrets and is safe for
