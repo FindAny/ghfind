@@ -175,6 +175,10 @@ gh workflow run compose-release.yml -R FindAny/ghfind \
 
 # 查看当前线上版本清单
 git fetch origin deploy && git show origin/deploy:components.manifest.json
+
+# 跟踪某个版本从发布到上线的全过程，并检查线上页面（只读）
+.github/compose/release-status.sh --wait ghfind-server vX.Y.Z
+.github/compose/probe.sh
 ```
 
 完整操作（包括恢复流程、密钥轮换和本地开发）见 [runbook.md](./runbook.md)。

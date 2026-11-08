@@ -21,6 +21,13 @@ gh variable set FEED_RELEASE_MODE -R FindAny/ghfind --body always   # then delet
 
 # Assemble a workspace locally (in a FindAny/ghfind checkout)
 .github/compose/assemble.sh [--channel main] [--ref NAME=REF] [--dir NAME=PATH] [--clean]
+
+# Follow a release to production, then check the live site (read-only)
+.github/compose/release-status.sh [--wait] ghfind|ghfind-server|ghfind-frontend vX.Y.Z
+.github/compose/probe.sh [https://origin]
+
+# Query a production D1 database (read-only; needs wrangler login)
+.github/compose/d1-read.sh core|feed "SELECT …"
 ```
 
 ## DESCRIPTION
@@ -54,14 +61,16 @@ so all CI/CD changes happen in one place.
 1. Merge to `main` in the component's repository and wait for its `CI` to pass.
 2. Tag the version on that exact commit: `git tag vX.Y.Z && git push origin vX.Y.Z`.
    Use the next semver. Tags are permanent, so never move or reuse one.
-3. Watch, in order:
+3. Follow it with `.github/compose/release-status.sh --wait <repo> vX.Y.Z`, then run
+   `.github/compose/probe.sh`. The chain, in order:
    - `Release` in the component's repository. It refuses a tag that is not on
      `main` or whose commit has no green `CI`, then pushes `rel/vX.Y.Z` and
      dispatches composition.
    - `Compose release` in `FindAny/ghfind`.
    - `CI` on the `deploy` branch in `FindAny/ghfind`.
    - `Deploy production (Cloudflare)` and `Deploy apps (production)` in
-     `FindAny/ghfind`.
+     `FindAny/ghfind`. They start by `workflow_run`, so their runs report main's
+     SHA, not the deploy commit's; match them by start time, as the script does.
 
 A release is *verified* once `rel/vX.Y.Z` exists. It is *deployed* once the deploy
 workflows succeed on the `deploy` commit that pins it.
@@ -207,6 +216,8 @@ deployment. It must never appear in this repository, the SDKs or a workflow log.
 | `.github/compose/components.json` | Who owns which path |
 | `.github/compose/assemble.sh` | Workspace assembly |
 | `.github/compose/compose-release.sh` | Builds the `deploy` commit. It refuses to stage anything except the manifest. |
+| `.github/compose/check-hub-contract.mjs` | Component CI check: every script a hub workflow calls exists; runs ci.yml's contract tests |
+| `.github/compose/release-status.sh`, `probe.sh`, `d1-read.sh` | Read-only release tracking, production probe and production D1 queries |
 | `.github/actions/assemble/` | Assembly action used by every workflow |
 | `.github/workflows/component-{ci,release}.yml` | Reusable CI and release for the private repositories |
 | `components.manifest.json` (on `deploy` only) | Exact component commits for that deploy |
