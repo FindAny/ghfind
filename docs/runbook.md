@@ -211,6 +211,7 @@ exact-commit CI evidence stops before its first write.
 ## SEE ALSO
 
 [architecture.md](./architecture.md) (design, credentials, security model).
+[deployment.zh.md](./deployment.zh.md) (Chinese deployment overview for clients and partners).
 In ghfind-server: `docs/operations/cloudflare-deployment-runbook.md` (Cloudflare
 resources, secrets, smoke, manual rollback) and
 `docs/operations/feed-github-protection.md`.

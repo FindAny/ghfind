@@ -86,7 +86,7 @@ ghfind 由三个仓库组成，本仓库公开：
   [`deploy`](https://github.com/FindAny/ghfind/tree/deploy) 分支记录每次生产发布：其中的
   `components.manifest.json` 写明线上使用的 `ghfind` 版本（即评分代码版本），以及两个私有组件的提交。
 - **如何上线。** 三个仓库各自发布 `vX.Y.Z` 版本；三者最新的已验证版本被组装成一个工作区，由本仓库部署到
-  Cloudflare。设计见 [docs/architecture.md](./docs/architecture.md)，操作手册见 [docs/runbook.md](./docs/runbook.md)。
+  Cloudflare。设计见 [docs/architecture.md](./docs/architecture.md)，操作手册见 [docs/runbook.md](./docs/runbook.md)，中文部署说明见 [docs/deployment.zh.md](./docs/deployment.zh.md)。
 
 ## 开发评分模块、SDK 与 CLI
 

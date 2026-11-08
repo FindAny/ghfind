@@ -92,7 +92,8 @@ ghfind is built from three repositories. This one is public:
 - **How it ships.** Each repository publishes `vX.Y.Z` releases. The latest verified
   release of all three is assembled into one workspace and deployed to Cloudflare
   from this repository. Design: [docs/architecture.md](./docs/architecture.md);
-  procedures: [docs/runbook.md](./docs/runbook.md).
+  procedures: [docs/runbook.md](./docs/runbook.md); Chinese deployment overview:
+  [docs/deployment.zh.md](./docs/deployment.zh.md).
 
 ## Develop the scoring module, SDKs and CLI
 
