@@ -5,7 +5,7 @@
 #   .github/compose/d1-read.sh core "SELECT name FROM d1_migrations ORDER BY id"
 #   .github/compose/d1-read.sh feed "SELECT COUNT(*) FROM feed_items"
 #
-# core = ghfind (shared by dev and production), feed = ghfind-feed. Schema changes go
+# core = ghfind, feed = ghfind-feed (production is the only environment). Schema changes go
 # through migrations and ops/feed-production-schema-release.json in ghfind-server,
 # never through this script, so it accepts one SELECT / WITH / EXPLAIN / read-only
 # PRAGMA statement and rejects anything that writes.
