@@ -120,7 +120,7 @@ jobs:
       - name: Verify Cloudflare D1 migrations from an empty database
         run: |
           pnpm exec wrangler d1 migrations apply ghfind --local --persist-to "$RUNNER_TEMP/ghfind-d1-migrations"
-          pnpm exec wrangler d1 migrations apply ghfind-feed-dev --local --persist-to "$RUNNER_TEMP/ghfind-d1-migrations"
+          pnpm exec wrangler d1 migrations apply GHFIND_FEED_D1 --local --persist-to "$RUNNER_TEMP/ghfind-d1-migrations"
 
       # Required database contracts run in the separate isolated service job.
       - name: Test Go packages
@@ -158,16 +158,16 @@ jobs:
           pnpm --filter @ghfind/web build
           pnpm --filter @ghfind/router typecheck
           pnpm --filter @ghfind/api typecheck
-          pnpm --filter @ghfind/api exec wrangler deploy --dry-run --env dev --outdir "$RUNNER_TEMP/ghfind-api-dist"
+          pnpm --filter @ghfind/api exec wrangler deploy --dry-run --env production --outdir "$RUNNER_TEMP/ghfind-api-dist"
           pnpm --filter @ghfind/cost-monitor typecheck
           pnpm --filter @ghfind/cost-monitor exec wrangler types --env production --include-runtime false --check
           pnpm --filter @ghfind/cost-monitor build
           node --test scripts/cost-monitor-watchdog.test.mjs scripts/cost-monitor-verify.test.mjs scripts/traffic-report-preview.test.mjs
           node scripts/cost-monitor-e2e.mjs
           pnpm --filter @ghfind/coord typecheck
-          pnpm --filter @ghfind/coord exec wrangler deploy --dry-run --env dev --outdir "$RUNNER_TEMP/ghfind-coord-dist"
+          pnpm --filter @ghfind/coord exec wrangler deploy --dry-run --env production --outdir "$RUNNER_TEMP/ghfind-coord-dist"
           pnpm --filter @ghfind/talent typecheck
-          pnpm --filter @ghfind/talent exec wrangler deploy --dry-run --env dev --outdir "$RUNNER_TEMP/ghfind-talent-dist"
+          pnpm --filter @ghfind/talent exec wrangler deploy --dry-run --env production --outdir "$RUNNER_TEMP/ghfind-talent-dist"
 
       - name: Record actual successful verify checkout
         run: node scripts/feed-ci-evidence.mjs record-job verify "$RUNNER_TEMP/verify.json"

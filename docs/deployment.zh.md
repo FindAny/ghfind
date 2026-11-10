@@ -60,7 +60,8 @@ ghfind 是 GitHub 开发者与开源项目的评估平台，生产站点为 <htt
 | 环境 | 地址 | 说明 |
 | --- | --- | --- |
 | 生产 | <https://ghfind.com> | 只能由自动流水线部署 |
-| 开发 | <https://dev.ghfind.com> | 手动部署，用于验证；与生产共用部分数据，需按手册预检 |
+
+开发环境（dev.ghfind.com）与按 PR 部署的预览环境已于 2026-11-09 下线；上线前的检查由各仓库 PR 的 CI 和 `deploy` 分支上的完整测试完成。
 
 ## 4. 发布与部署流程
 
@@ -175,6 +176,10 @@ gh workflow run compose-release.yml -R FindAny/ghfind \
 
 # 查看当前线上版本清单
 git fetch origin deploy && git show origin/deploy:components.manifest.json
+
+# 跟踪某个版本从发布到上线的全过程，并检查线上页面（只读）
+.github/compose/release-status.sh --wait ghfind-server vX.Y.Z
+.github/compose/probe.sh
 ```
 
 完整操作（包括恢复流程、密钥轮换和本地开发）见 [runbook.md](./runbook.md)。
