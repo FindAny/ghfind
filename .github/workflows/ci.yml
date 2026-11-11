@@ -376,13 +376,26 @@ jobs:
               echo "::warning::archive.ubuntu.com is unreachable; keeping the runner's default apt mirror."
             fi
           fi
+          # Record whether any Ubuntu mirror resolves. Playwright's system
+          # packages (mostly fonts) come from apt; the runner image already has
+          # Chrome's libraries, so the browser itself does not need them.
+          if getent hosts archive.ubuntu.com >/dev/null || getent hosts azure.archive.ubuntu.com >/dev/null; then
+            echo "APT_REACHABLE=1" >> "$GITHUB_ENV"
+          else
+            echo "::warning::No Ubuntu mirror resolves from this runner; Playwright will install Chromium without system packages."
+            echo "APT_REACHABLE=0" >> "$GITHUB_ENV"
+          fi
           printf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99-ci-downloads >/dev/null
       - name: Install locked complete E2E dependencies
         run: |
           pnpm install --frozen-lockfile
           pnpm -C platform/feed install --frozen-lockfile
           npm ci --prefix platform/runtime
-          pnpm exec playwright install --with-deps chromium
+          if [ "$APT_REACHABLE" = "1" ]; then
+            pnpm exec playwright install --with-deps chromium
+          else
+            pnpm exec playwright install chromium
+          fi
       - name: Complete both profile journeys without skipped dependencies
         run: |
           python3 scripts/feed-e2e/harness.test.py
