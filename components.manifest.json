@@ -1,13 +1,13 @@
 {
   "format": "ghfind-components-v1",
-  "composedAt": "2026-11-11T16:12:04Z",
-  "trigger": "FindAny/ghfind-frontend v1.0.7",
+  "composedAt": "2026-11-11T16:34:36Z",
+  "trigger": "FindAny/ghfind v1.0.5",
   "components": [
     {
       "name": "ghfind",
       "repository": "FindAny/ghfind",
-      "ref": "v1.0.4",
-      "sha": "c6b3c5e451d9f481f68233b030eb0049d7954652"
+      "ref": "v1.0.5",
+      "sha": "fa6bd9349f035be82f3de51cffbf5d65272ade6e"
     },
     {
       "name": "ghfind-server",
