@@ -363,11 +363,18 @@ jobs:
         with:
           go-version: "1.23.x"
       - name: Use the official Ubuntu mirror with bounded downloads
-        # The runner's Azure mirror can stall Playwright system dependencies.
-        # Keep signature verification and the separate security mirror intact.
+        # The runner's Azure mirror can stall Playwright system dependencies,
+        # so prefer the official mirror, but only when the runner can reach it:
+        # on 2026-11-11 archive.ubuntu.com stopped resolving from runners and
+        # forcing it failed every E2E job. Keep signature verification and the
+        # separate security mirror intact.
         run: |
           if [ -f /etc/apt/apt-mirrors.txt ]; then
-            printf '%s\n' 'https://archive.ubuntu.com/ubuntu' | sudo tee /etc/apt/apt-mirrors.txt >/dev/null
+            if curl -fsSI --max-time 15 https://archive.ubuntu.com/ubuntu/dists/ >/dev/null; then
+              printf '%s\n' 'https://archive.ubuntu.com/ubuntu' | sudo tee /etc/apt/apt-mirrors.txt >/dev/null
+            else
+              echo "::warning::archive.ubuntu.com is unreachable; keeping the runner's default apt mirror."
+            fi
           fi
           printf '%s\n' 'Acquire::http::Timeout "30";' 'Acquire::https::Timeout "30";' 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/99-ci-downloads >/dev/null
       - name: Install locked complete E2E dependencies
