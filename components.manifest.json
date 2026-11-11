@@ -1,7 +1,7 @@
 {
   "format": "ghfind-components-v1",
-  "composedAt": "2026-11-11T09:29:23Z",
-  "trigger": "FindAny/ghfind-frontend v1.0.5",
+  "composedAt": "2026-11-11T14:02:22Z",
+  "trigger": "FindAny/ghfind-frontend v1.0.6",
   "components": [
     {
       "name": "ghfind",
@@ -18,8 +18,8 @@
     {
       "name": "ghfind-frontend",
       "repository": "FindAny/ghfind-frontend",
-      "ref": "v1.0.5",
-      "sha": "bab875632070ed39631f91616dfd8e8d1fb123af"
+      "ref": "v1.0.6",
+      "sha": "d0fab7891d272363c4dbcf0eb32e81ceadceeab6"
     }
   ]
 }
