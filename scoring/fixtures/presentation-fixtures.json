@@ -1162,5 +1162,68 @@
       "presentation_core_churn_share": 1
     },
     "discount": 1
+  },
+  {
+    "name": "lua-core-churn-protects-mixed-maintainer",
+    "prs": [
+      {
+        "repo": "org/game-mod",
+        "repo_stars": 1000,
+        "title": "update runtime and readme",
+        "churn": 1000,
+        "changed_files": 2,
+        "file_changes": [
+          {
+            "path": "mod/runtime.lua",
+            "additions": 400,
+            "deletions": 0
+          },
+          {
+            "path": "README.md",
+            "additions": 600,
+            "deletions": 0
+          }
+        ],
+        "trivial": false
+      }
+    ],
+    "own_repos": [],
+    "expected": {
+      "presentation_churn_share": 0.6,
+      "presentation_repo_concentration": 1,
+      "presentation_pr_sample": 1,
+      "presentation_core_pr_count": 0,
+      "presentation_core_churn_share": 0.4
+    },
+    "discount": 1
+  },
+  {
+    "name": "lua-documentation-path-stays-presentation",
+    "prs": [
+      {
+        "repo": "org/game-mod",
+        "repo_stars": 1000,
+        "title": "update example",
+        "churn": 100,
+        "changed_files": 1,
+        "file_changes": [
+          {
+            "path": "docs/example.lua",
+            "additions": 100,
+            "deletions": 0
+          }
+        ],
+        "trivial": false
+      }
+    ],
+    "own_repos": [],
+    "expected": {
+      "presentation_churn_share": 1,
+      "presentation_repo_concentration": 1,
+      "presentation_pr_sample": 1,
+      "presentation_core_pr_count": 0,
+      "presentation_core_churn_share": 0
+    },
+    "discount": 0.7666666666666667
   }
 ]

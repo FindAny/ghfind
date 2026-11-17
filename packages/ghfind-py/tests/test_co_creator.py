@@ -26,7 +26,12 @@ def test_shared_cap_boundaries(case):
     assert low_prestige_bulk_contribution_cap(case['metrics']) == pytest.approx(case['expected'],abs=1e-10)
 
 from ghfind._co_creator import weighted_core_churn, summarize_contributors
+from ghfind._extract import impact_code_sample
 CONTENT=json.loads((Path(__file__).resolve().parents[3]/'scoring/fixtures/contribution-content-fixtures.json').read_text())
+@pytest.mark.parametrize('case',CONTENT['legacy_impact'],ids=lambda c:c['name'])
+def test_legacy_core_code_evidence(case):
+    assert impact_code_sample(case['prs']) == case['expected']
+
 @pytest.mark.parametrize('case',CONTENT['churn'],ids=lambda c:c['name'])
 def test_content_weighted_core_churn(case):
     core,total,fresh=weighted_core_churn(case['files'],case['repo'])

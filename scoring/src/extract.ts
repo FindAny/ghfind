@@ -716,7 +716,7 @@ function isCoreCodePath(path: string, uiLibrary = false): boolean {
   const p = path.toLowerCase();
   if (isDocLikePath(p) || isPresentationOnlyPath(p, uiLibrary)) return false;
   if (uiLibrary && STYLE_FILE.test(p)) return true;
-  return /\.(c|cc|cpp|cs|go|java|js|jsx|kt|m|mm|php|py|rb|rs|scala|swift|ts|tsx)$/i.test(
+  return /\.(c|cc|cpp|cs|go|java|js|jsx|kt|lua|m|mm|php|py|rb|rs|scala|swift|ts|tsx)$/i.test(
     p,
   );
 }

@@ -60,6 +60,11 @@ it('keeps the cap bounded and nondecreasing with prestige across core levels', (
 
 import contentFx from '../fixtures/contribution-content-fixtures.json';
 import {weightedCoreChurn,summarizeContributors} from '../src/co-creator';
+import {impactCodeSample} from '../src/extract';
+import type {RecentPr} from '../src/types';
+it.each(contentFx.legacy_impact)('legacy core-code evidence: $name',c=>{
+ expect(impactCodeSample(c.prs as RecentPr[])).toEqual(c.expected);
+});
 it.each(contentFx.churn)('content-weighted core churn: $name',c=>{
  expect(weightedCoreChurn(c.files,c.repo)).toEqual(c.expected);
 });

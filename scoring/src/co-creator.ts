@@ -119,7 +119,7 @@ export function budgetCoCreatorShares<T extends { attribution_share?: number; co
   return repos.map(repo => ({...repo, attribution_share: projectShare(repo)*(repo.co_creator_facts?.first_author ? 1 : multiplier)}));
 }
 
-const CORE_SOURCE = /\.(c|cc|cpp|cs|go|java|js|jsx|mjs|cjs|kt|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss)$/;
+const CORE_SOURCE = /\.(c|cc|cpp|cs|go|java|js|jsx|mjs|cjs|kt|lua|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss)$/;
 /** Vendored, generated and build-output paths never count as authored core code. */
 const GENERATED_PATH = /(^|\/)(vendor|vendored|third[_-]?party|node_modules|dist|build|out|generated|__generated__|gen)\/|\.(min\.js|pb\.go|pb\.gw\.go|pb\.ts|g\.dart|freezed\.dart|generated\.\w+)$|_pb2(_grpc)?\.py$|\.d\.ts$/;
 /** Per-file churn cap: one huge file cannot carry a contribution on its own. */

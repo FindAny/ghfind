@@ -72,7 +72,7 @@ def co_creator_share(f):
     return share*smooth(share/SHARE_FADE)
 
 
-_CORE_SOURCE = re.compile(r'\.(c|cc|cpp|cs|go|java|js|jsx|mjs|cjs|kt|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss)$')
+_CORE_SOURCE = re.compile(r'\.(c|cc|cpp|cs|go|java|js|jsx|mjs|cjs|kt|lua|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss)$')
 _GENERATED_PATH = re.compile(r'(^|/)(vendor|vendored|third[_-]?party|node_modules|dist|build|out|generated|__generated__|gen)/|\.(min\.js|pb\.go|pb\.gw\.go|pb\.ts|g\.dart|freezed\.dart|generated\.\w+)$|_pb2(_grpc)?\.py$|\.d\.ts$')
 _BOT_LOGIN = re.compile(r'\[bot\]$|-bot$|^(dependabot|renovate|github-actions|copilot-swe-agent)', re.I)
 

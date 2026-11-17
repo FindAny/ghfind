@@ -13,7 +13,7 @@ var presentationCore = regexp.MustCompile(`\.(c|cc|cpp|cs|go|java|kt|m|mm|php|py
 var presentationServer = regexp.MustCompile(`(^|/)(server|backend|api|database|db|auth)(/|$)`)
 var presentationJS = regexp.MustCompile(`\.(jsx?|tsx?)$`)
 var presentationDocusaurus = regexp.MustCompile(`(^|/)docusaurus\.config\.[cm]?[jt]s$`)
-var presentationCoreFile = regexp.MustCompile(`(?i)\.(c|cc|cpp|cs|go|java|js|jsx|kt|m|mm|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss|sass|less|styl)$`)
+var presentationCoreFile = regexp.MustCompile(`(?i)\.(c|cc|cpp|cs|go|java|js|jsx|kt|lua|m|mm|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss|sass|less|styl)$`)
 var presentationStyle = regexp.MustCompile(`\.(css|scss|sass|less|styl)$`)
 var presentationPaths = []*regexp.Regexp{
 	regexp.MustCompile(`(?i)(^|/)(assets?|public|static)/.*(?:\.[a-z0-9_-]{6,}\.m?js|\.min\.js)$`),
