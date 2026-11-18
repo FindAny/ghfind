@@ -1,7 +1,7 @@
 import type { RawMetrics, RecentPr } from "./types";
 
 const UI_LIBRARY = /(^|[-_./])(ui|design|design-system|components?|widgets?|styles?|css|themes?|antd|mui|chakra|shadcn|patternfly|tailwind(css)?)([-_./]|$)/i;
-const CORE_FILE = /\.(c|cc|cpp|cs|go|java|js|jsx|kt|m|mm|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss|sass|less|styl)$/i;
+const CORE_FILE = /\.(c|cc|cpp|cs|go|java|js|jsx|kt|lua|m|mm|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss|sass|less|styl)$/i;
 const STYLE = /\.(css|scss|sass|less|styl)$/i;
 const SITE = /(^|[-_./])(site|website|blog|docs?|homepage)([-_./]|$)|site$|\.github\.io$/i;
 

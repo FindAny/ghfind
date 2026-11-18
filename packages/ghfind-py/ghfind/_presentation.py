@@ -2,7 +2,7 @@
 import re
 
 UI_LIBRARY = re.compile(r'(^|[-_./])(ui|design|design-system|components?|widgets?|styles?|css|themes?|antd|mui|chakra|shadcn|patternfly|tailwind(css)?)([-_./]|$)', re.I)
-CORE_FILE = re.compile(r'\.(c|cc|cpp|cs|go|java|js|jsx|kt|m|mm|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss|sass|less|styl)$', re.I)
+CORE_FILE = re.compile(r'\.(c|cc|cpp|cs|go|java|js|jsx|kt|lua|m|mm|php|py|rb|rs|scala|swift|ts|tsx|vue|svelte|css|scss|sass|less|styl)$', re.I)
 SITE = re.compile(r'(^|[-_./])(site|website|blog|docs?|homepage)([-_./]|$)|site$|\.github\.io$', re.I)
 
 def is_presentation_path(path, repo, doc_site=False):

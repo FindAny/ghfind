@@ -534,7 +534,7 @@ def _is_core_code_path(path: str, ui_library=False) -> bool:
     p = path.lower()
     if _is_doc_like_path(p) or _is_presentation_only_path(p, ui_library):
         return False
-    return bool((ui_library and re.search(r"\.(css|scss|sass|less|styl)$",p)) or re.search(r"\.(c|cc|cpp|cs|go|java|js|jsx|kt|m|mm|php|py|rb|rs|scala|swift|ts|tsx)$", p, re.I))
+    return bool((ui_library and re.search(r"\.(css|scss|sass|less|styl)$",p)) or re.search(r"\.(c|cc|cpp|cs|go|java|js|jsx|kt|lua|m|mm|php|py|rb|rs|scala|swift|ts|tsx)$", p, re.I))
 
 
 def _is_presentation_only_path(path: str, ui_library=False) -> bool:

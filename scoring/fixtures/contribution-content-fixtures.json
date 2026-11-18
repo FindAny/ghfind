@@ -128,6 +128,95 @@
         "total": 0,
         "fresh": 0
       }
+    },
+    {
+      "name": "lua-runtime-source",
+      "repo": "org-x/game-mod",
+      "files": [
+        {
+          "path": "mod/runtime.lua",
+          "additions": 100,
+          "deletions": 10
+        }
+      ],
+      "expected": {
+        "core": 110,
+        "total": 110,
+        "fresh": 110
+      }
+    },
+    {
+      "name": "lua-vendored-generated-and-presentation-excluded",
+      "repo": "org-x/game-mod",
+      "files": [
+        {
+          "path": "vendor/runtime.lua",
+          "additions": 100,
+          "deletions": 0
+        },
+        {
+          "path": "third_party/runtime.lua",
+          "additions": 100,
+          "deletions": 0
+        },
+        {
+          "path": "generated/runtime.lua",
+          "additions": 100,
+          "deletions": 0
+        },
+        {
+          "path": "dist/runtime.lua",
+          "additions": 100,
+          "deletions": 0
+        },
+        {
+          "path": "docs/example.lua",
+          "additions": 100,
+          "deletions": 0
+        },
+        {
+          "path": "README.lua",
+          "additions": 100,
+          "deletions": 0
+        }
+      ],
+      "expected": {
+        "core": 0,
+        "total": 600,
+        "fresh": 0
+      }
+    },
+    {
+      "name": "lua-rewrite-retains-discount-and-file-cap",
+      "repo": "org-x/game-mod",
+      "files": [
+        {
+          "path": "mod/runtime.lua",
+          "additions": 1000,
+          "deletions": 1000
+        }
+      ],
+      "expected": {
+        "core": 150,
+        "total": 2000,
+        "fresh": 0
+      }
+    },
+    {
+      "name": "lua-new-code-retains-file-cap",
+      "repo": "org-x/game-mod",
+      "files": [
+        {
+          "path": "mod/runtime.lua",
+          "additions": 2000,
+          "deletions": 0
+        }
+      ],
+      "expected": {
+        "core": 1500,
+        "total": 2000,
+        "fresh": 1500
+      }
     }
   ],
   "contributors": [
@@ -229,6 +318,60 @@
         "user_commits": 40,
         "total_commits": 250,
         "leading_commits": 40
+      }
+    }
+  ],
+  "legacy_impact": [
+    {
+      "name": "lua-with-readme-is-code",
+      "prs": [
+        {
+          "title": "fix runtime",
+          "repo": "org-x/game-mod",
+          "files": [
+            "mod/runtime.lua",
+            "README.md"
+          ]
+        }
+      ],
+      "expected": {
+        "pr_sample": 1,
+        "code_pr_sample": 1
+      }
+    },
+    {
+      "name": "lua-documentation-examples-stay-doc-like",
+      "prs": [
+        {
+          "title": "fix example",
+          "repo": "org-x/game-mod",
+          "files": [
+            "docs/example.lua",
+            "README.md"
+          ]
+        }
+      ],
+      "expected": {
+        "pr_sample": 1,
+        "code_pr_sample": 0
+      }
+    },
+    {
+      "name": "lua-doc-heavy-sample-stays-doc-like",
+      "prs": [
+        {
+          "title": "update runtime and guides",
+          "repo": "org-x/game-mod",
+          "files": [
+            "mod/runtime.lua",
+            "README.md",
+            "docs/usage.md"
+          ]
+        }
+      ],
+      "expected": {
+        "pr_sample": 1,
+        "code_pr_sample": 0
       }
     }
   ]
