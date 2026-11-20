@@ -301,7 +301,13 @@ function textMatches(text: string, words: string[]): boolean {
 
 function clampText(text: string, limit: number): string {
   const clean = text.replace(/\s+/g, " ").trim();
-  return clean.length > limit ? `${clean.slice(0, limit - 1)}…` : clean;
+  if (clean.length <= limit) return clean;
+
+  let end = limit - 1;
+  const boundaryCodePoint = clean.codePointAt(end - 1);
+  // If the final retained code unit starts a surrogate pair, omit the whole pair.
+  if (boundaryCodePoint !== undefined && boundaryCodePoint > 0xffff) end--;
+  return `${clean.slice(0, end)}…`;
 }
 
 export function parseReadmeFeatures(markdown: string): ReadmeFeatures {

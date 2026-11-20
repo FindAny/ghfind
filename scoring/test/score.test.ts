@@ -639,6 +639,36 @@ Install the package.
     expect(features.prompt_summary).toContain("A clear overview");
   });
 
+  const introPrefix = "文".repeat(348);
+  const sectionPrefix = "a".repeat(218);
+  const titlePrefix = "a".repeat(1491);
+  const prefixWithEmoji = `${"文".repeat(347)}🚀`;
+
+  it.each([
+    ["an intro", `# Project\n\n${introPrefix}🚀end`, `Intro: ${introPrefix}… Sections:`],
+    [
+      "a section",
+      `# Project\n\nOverview.\n\n## Usage\n\n${sectionPrefix}🚀end`,
+      `Usage: ${sectionPrefix}… Signals: usage`,
+    ],
+    ["the full summary", `# ${titlePrefix}🚀end`, `Title: ${titlePrefix}…`],
+    [
+      "an intro where the emoji fits before the ellipsis",
+      `# Project\n\n${prefixWithEmoji}end`,
+      `Intro: ${prefixWithEmoji}… Sections:`,
+    ],
+    [
+      "an intro at the length limit",
+      `# Project\n\n${introPrefix}🚀`,
+      `Intro: ${introPrefix}🚀 Sections:`,
+    ],
+  ])("preserves Unicode in %s", (_part, markdown, expected) => {
+    const { prompt_summary } = parseReadmeFeatures(markdown);
+    expect(prompt_summary).not.toMatch(/[\uD800-\uDFFF]/u);
+    expect(prompt_summary).toContain(expected);
+    expect(prompt_summary.length).toBeLessThanOrEqual(1500);
+  });
+
   it("treats Quick Start as a usage signal", () => {
     const features = parseReadmeFeatures(`
 # Project
