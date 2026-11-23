@@ -265,7 +265,20 @@ def _text_matches(text: str, words: List[str]) -> bool:
 
 def _clamp_text(text: str, limit: int) -> str:
     clean = re.sub(r"\s+", " ", text).strip()
-    return (clean[: limit - 1] + "…") if len(clean) > limit else clean
+    total_units = sum(2 if ord(c) > 0xFFFF else 1 for c in clean)
+    if total_units <= limit:
+        return clean
+
+    target = limit - 1
+    current_units = 0
+    retained_chars = []
+    for c in clean:
+        c_units = 2 if ord(c) > 0xFFFF else 1
+        if current_units + c_units > target:
+            break
+        retained_chars.append(c)
+        current_units += c_units
+    return "".join(retained_chars) + "…"
 
 
 def parse_readme_features(markdown: str) -> Dict[str, Any]:
