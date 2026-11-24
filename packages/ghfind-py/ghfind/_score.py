@@ -4,10 +4,9 @@
 The number is the single source of truth; the LLM only writes prose/roast on top
 of this output.
 
-Parity notes (why this reproduces the TS output bit-for-bit):
-- TS reimplemented Python's ``round()`` (round-half-to-even / banker's) as its own
-  ``round()``. Python's built-in ``round()`` IS banker's, so we use it directly for
-  every TS ``round(...)`` call.
+Parity notes for TypeScript rounding:
+- TS and Go scale values before applying half-even with a tolerance around the
+  midpoint; ``round_half_even`` mirrors that rule for the scoring calculations.
 - TS ``Math.round(...)`` is round-half-UP, NOT banker's. We replicate it with
   ``_math_round`` = ``floor(x + 0.5)`` wherever the TS uses ``Math.round``.
 - ``??`` (nullish) defaults only on null/undefined; ``_nz`` mirrors that (defaults
@@ -22,6 +21,7 @@ import math
 from typing import Any, Dict, List, Mapping, Optional
 
 from ._risk import assess_risk
+from ._rounding import round_half_even
 
 SUBSCORE_MAX: Dict[str, float] = {
     "account_maturity": 10,
@@ -52,7 +52,7 @@ def log_ratio(value: float, full_at: float) -> float:
 
 def clamp_score(value: float) -> float:
     """Clamp a score to [0, 100] and round to 2 decimals (banker's)."""
-    return round(max(0, min(value, 100)), 2)
+    return round_half_even(max(0, min(value, 100)), 2)
 
 
 def star_engagement_multiplier(ratio: Any) -> float:
@@ -393,7 +393,7 @@ def original_project_quality(m):
             * content_skill_discount(m)
         )
         project_substance = max(0, min(_nz(m.get("best_original_repo_quality_score"), 0), 1)) * 6
-        return round(star_pts + project_substance, 1)
+        return round_half_even(star_pts + project_substance, 1)
 
 
 def score(m: Mapping[str, Any]) -> Dict[str, Any]:
@@ -410,7 +410,7 @@ def score(m: Mapping[str, Any]) -> Dict[str, Any]:
     age_pts = min(m["account_age_years"] / 6.0, 1.0) * 7
     years = m["contribution_years_active"]
     span_pts = 0 if years == 0 else 1 if years == 1 else 2 if years == 2 else 3
-    sub["account_maturity"] = round(age_pts + span_pts, 1)
+    sub["account_maturity"] = round_half_even(age_pts + span_pts, 1)
 
     # 2. Original Project Quality (18)
     sub["original_project_quality"] = max(original_project_quality(m), max(0,min(18,m.get("personal_original_project_quality_score",0))))
@@ -444,7 +444,7 @@ def score(m: Mapping[str, Any]) -> Dict[str, Any]:
         + high_impact_core_pr_bonus(m) * (1-(1-presentation_discount(m))*.8)
         - author_self_closed_external_penalty(m)
     )
-    sub["contribution_quality"] = round(
+    sub["contribution_quality"] = round_half_even(
         saturate_toward(max(0, contribution_quality_raw), contribution_evidence_ceiling(m)),
         1,
     )
@@ -457,7 +457,7 @@ def score(m: Mapping[str, Any]) -> Dict[str, Any]:
     from ._presentation import ecosystem_presentation_discount
     external_share = min(1,max(0,_nz(m.get("external_merged_pr_count"),0))/max(1,m["merged_pr_count"]))
     ecosystem_raw = (prestige + depth) * ecosystem_presentation_discount(m) * (1-(1-content_skill_discount(m))*(1-external_share))
-    sub["ecosystem_impact"] = round(
+    sub["ecosystem_impact"] = round_half_even(
         ecosystem_raw,
         1,
     )
@@ -474,7 +474,7 @@ def score(m: Mapping[str, Any]) -> Dict[str, Any]:
         ratio = followers / following
         ratio_pts = 3 if ratio >= 2 else 2 if ratio >= 1 else 1.5 if ratio >= 0.5 else 1
     community_raw = follower_pts + ratio_pts
-    sub["community_influence"] = round(
+    sub["community_influence"] = round_half_even(
         min(community_raw, 2.5) if _has_social_only_dormant_signal(m) else community_raw, 1
     )
 
@@ -490,12 +490,12 @@ def score(m: Mapping[str, Any]) -> Dict[str, Any]:
     else:
         recency_pts = 0.0
     diversity_pts = min(m["activity_type_count"], 4) * 1.125
-    sub["activity_authenticity"] = round(contrib_pts + recency_pts + diversity_pts, 1)
+    sub["activity_authenticity"] = round_half_even(contrib_pts + recency_pts + diversity_pts, 1)
 
-    base = round(sum(sub.values()), 1)
+    base = round_half_even(sum(sub.values()), 1)
 
     risk_assessment, risk_notes, flags, penalty = assess_risk(m)
-    final = clamp_score(round(base - penalty, 2))
+    final = clamp_score(round_half_even(base - penalty, 2))
     t = tier_for(final)
 
     return {

@@ -1,0 +1,2798 @@
+{
+  "generator": "actual scoring/src/score.ts score and roundHalfEven",
+  "scans": {
+    "normal": {
+      "metrics": {
+        "username": "synthetic-fixture",
+        "profile_url": null,
+        "avatar_url": null,
+        "name": null,
+        "bio": null,
+        "company": null,
+        "account_age_years": 1.5,
+        "created_at": null,
+        "followers": 0,
+        "following": 0,
+        "public_repos": 0,
+        "fetched_repo_count": 0,
+        "original_repo_count": 0,
+        "nonempty_original_repo_count": 0,
+        "fork_repo_count": 0,
+        "empty_original_repo_count": 0,
+        "total_stars": 0,
+        "max_stars": 0,
+        "merged_pr_count": 0,
+        "total_pr_count": 0,
+        "issues_created": 0,
+        "last_year_contributions": 0,
+        "activity_type_count": 0,
+        "contribution_years_active": 0,
+        "days_since_last_activity": null,
+        "recent_merged_pr_sample": 0,
+        "recent_trivial_pr_count": 0,
+        "external_trivial_pr_count": 0,
+        "max_impact_repo_stars": 0,
+        "impact_pr_count": 0,
+        "impact_depth_raw": 0,
+        "star_inflation_suspect": false,
+        "closed_unmerged_pr_count": 0,
+        "pr_rejection_rate": 0,
+        "recent_pr_sample": 0,
+        "top_repo_pr_target": null,
+        "top_repo_pr_share": 0,
+        "templated_pr_ratio": 0,
+        "pr_flood_suspect": false
+      },
+      "scoring": {
+        "sub_scores": {
+          "account_maturity": 1.8,
+          "original_project_quality": 0,
+          "contribution_quality": 0,
+          "ecosystem_impact": 0,
+          "community_influence": 0,
+          "activity_authenticity": 0
+        },
+        "base_score": 1.8,
+        "red_flags": [],
+        "risk_assessment": {
+          "version": "v10",
+          "risk_score": 0,
+          "level": "none",
+          "confidence": 0,
+          "applied_penalty": 0,
+          "signals": [
+            {
+              "flag": "no_original_work",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.7,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+              "evidence": {
+                "observed": {
+                  "nonempty_original_repo_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            },
+            {
+              "flag": "ghost_profile",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.6,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+              "evidence": {
+                "observed": {
+                  "has_bio": false,
+                  "followers": 0,
+                  "total_stars": 0,
+                  "merged_pr_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            }
+          ],
+          "coverage": {
+            "repo": 0,
+            "merged_pr": 0,
+            "all_pr": 0
+          }
+        },
+        "risk_notes": [
+          {
+            "flag": "no_original_work",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.7,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+            "evidence": {
+              "observed": {
+                "nonempty_original_repo_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          },
+          {
+            "flag": "ghost_profile",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.6,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+            "evidence": {
+              "observed": {
+                "has_bio": false,
+                "followers": 0,
+                "total_stars": 0,
+                "merged_pr_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          }
+        ],
+        "total_penalty": 0,
+        "final_score": 1.8,
+        "tier": "拉完了",
+        "tier_label": "起步阶段 · 多练多攒作品"
+      }
+    },
+    "age_edge": {
+      "metrics": {
+        "username": "synthetic-fixture",
+        "profile_url": null,
+        "avatar_url": null,
+        "name": null,
+        "bio": null,
+        "company": null,
+        "account_age_years": -386022825203185.44,
+        "created_at": null,
+        "followers": 0,
+        "following": 0,
+        "public_repos": 0,
+        "fetched_repo_count": 0,
+        "original_repo_count": 0,
+        "nonempty_original_repo_count": 0,
+        "fork_repo_count": 0,
+        "empty_original_repo_count": 0,
+        "total_stars": 0,
+        "max_stars": 0,
+        "merged_pr_count": 0,
+        "total_pr_count": 0,
+        "issues_created": 0,
+        "last_year_contributions": 0,
+        "activity_type_count": 0,
+        "contribution_years_active": 0,
+        "days_since_last_activity": null,
+        "recent_merged_pr_sample": 0,
+        "recent_trivial_pr_count": 0,
+        "external_trivial_pr_count": 0,
+        "max_impact_repo_stars": 0,
+        "impact_pr_count": 0,
+        "impact_depth_raw": 0,
+        "star_inflation_suspect": false,
+        "closed_unmerged_pr_count": 0,
+        "pr_rejection_rate": 0,
+        "recent_pr_sample": 0,
+        "top_repo_pr_target": null,
+        "top_repo_pr_share": 0,
+        "templated_pr_ratio": 0,
+        "pr_flood_suspect": false
+      },
+      "scoring": {
+        "sub_scores": {
+          "account_maturity": -450359962737049.7,
+          "original_project_quality": 0,
+          "contribution_quality": 0,
+          "ecosystem_impact": 0,
+          "community_influence": 0,
+          "activity_authenticity": 0
+        },
+        "base_score": -450359962737049.7,
+        "red_flags": [],
+        "risk_assessment": {
+          "version": "v10",
+          "risk_score": 0,
+          "level": "none",
+          "confidence": 0,
+          "applied_penalty": 0,
+          "signals": [
+            {
+              "flag": "no_original_work",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.7,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+              "evidence": {
+                "observed": {
+                  "nonempty_original_repo_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            },
+            {
+              "flag": "ghost_profile",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.6,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+              "evidence": {
+                "observed": {
+                  "has_bio": false,
+                  "followers": 0,
+                  "total_stars": 0,
+                  "merged_pr_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            }
+          ],
+          "coverage": {
+            "repo": 0,
+            "merged_pr": 0,
+            "all_pr": 0
+          }
+        },
+        "risk_notes": [
+          {
+            "flag": "no_original_work",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.7,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+            "evidence": {
+              "observed": {
+                "nonempty_original_repo_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          },
+          {
+            "flag": "ghost_profile",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.6,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+            "evidence": {
+              "observed": {
+                "has_bio": false,
+                "followers": 0,
+                "total_stars": 0,
+                "merged_pr_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          }
+        ],
+        "total_penalty": 0,
+        "final_score": 0,
+        "tier": "拉完了",
+        "tier_label": "起步阶段 · 多练多攒作品"
+      }
+    },
+    "activity_edge": {
+      "metrics": {
+        "username": "synthetic-fixture",
+        "profile_url": null,
+        "avatar_url": null,
+        "name": null,
+        "bio": null,
+        "company": null,
+        "account_age_years": 0,
+        "created_at": null,
+        "followers": 0,
+        "following": 0,
+        "public_repos": 0,
+        "fetched_repo_count": 0,
+        "original_repo_count": 0,
+        "nonempty_original_repo_count": 0,
+        "fork_repo_count": 0,
+        "empty_original_repo_count": 0,
+        "total_stars": 0,
+        "max_stars": 0,
+        "merged_pr_count": 0,
+        "total_pr_count": 0,
+        "issues_created": 0,
+        "last_year_contributions": 0,
+        "activity_type_count": -400319966877420,
+        "contribution_years_active": 0,
+        "days_since_last_activity": null,
+        "recent_merged_pr_sample": 0,
+        "recent_trivial_pr_count": 0,
+        "external_trivial_pr_count": 0,
+        "max_impact_repo_stars": 0,
+        "impact_pr_count": 0,
+        "impact_depth_raw": 0,
+        "star_inflation_suspect": false,
+        "closed_unmerged_pr_count": 0,
+        "pr_rejection_rate": 0,
+        "recent_pr_sample": 0,
+        "top_repo_pr_target": null,
+        "top_repo_pr_share": 0,
+        "templated_pr_ratio": 0,
+        "pr_flood_suspect": false
+      },
+      "scoring": {
+        "sub_scores": {
+          "account_maturity": 0,
+          "original_project_quality": 0,
+          "contribution_quality": 0,
+          "ecosystem_impact": 0,
+          "community_influence": 0,
+          "activity_authenticity": -450359962737097.5
+        },
+        "base_score": -450359962737097.5,
+        "red_flags": [],
+        "risk_assessment": {
+          "version": "v10",
+          "risk_score": 0,
+          "level": "none",
+          "confidence": 0,
+          "applied_penalty": 0,
+          "signals": [
+            {
+              "flag": "no_original_work",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.7,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+              "evidence": {
+                "observed": {
+                  "nonempty_original_repo_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            },
+            {
+              "flag": "ghost_profile",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.6,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+              "evidence": {
+                "observed": {
+                  "has_bio": false,
+                  "followers": 0,
+                  "total_stars": 0,
+                  "merged_pr_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            }
+          ],
+          "coverage": {
+            "repo": 0,
+            "merged_pr": 0,
+            "all_pr": 0
+          }
+        },
+        "risk_notes": [
+          {
+            "flag": "no_original_work",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.7,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+            "evidence": {
+              "observed": {
+                "nonempty_original_repo_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          },
+          {
+            "flag": "ghost_profile",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.6,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+            "evidence": {
+              "observed": {
+                "has_bio": false,
+                "followers": 0,
+                "total_stars": 0,
+                "merged_pr_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          }
+        ],
+        "total_penalty": 0,
+        "final_score": 0,
+        "tier": "拉完了",
+        "tier_label": "起步阶段 · 多练多攒作品"
+      }
+    },
+    "negative_zero": {
+      "metrics": {
+        "username": "synthetic-fixture",
+        "profile_url": null,
+        "avatar_url": null,
+        "name": null,
+        "bio": null,
+        "company": null,
+        "account_age_years": -0.001,
+        "created_at": null,
+        "followers": 0,
+        "following": 0,
+        "public_repos": 0,
+        "fetched_repo_count": 0,
+        "original_repo_count": 0,
+        "nonempty_original_repo_count": 0,
+        "fork_repo_count": 0,
+        "empty_original_repo_count": 0,
+        "total_stars": 0,
+        "max_stars": 0,
+        "merged_pr_count": 0,
+        "total_pr_count": 0,
+        "issues_created": 0,
+        "last_year_contributions": 0,
+        "activity_type_count": 0,
+        "contribution_years_active": 0,
+        "days_since_last_activity": null,
+        "recent_merged_pr_sample": 0,
+        "recent_trivial_pr_count": 0,
+        "external_trivial_pr_count": 0,
+        "max_impact_repo_stars": 0,
+        "impact_pr_count": 0,
+        "impact_depth_raw": 0,
+        "star_inflation_suspect": false,
+        "closed_unmerged_pr_count": 0,
+        "pr_rejection_rate": 0,
+        "recent_pr_sample": 0,
+        "top_repo_pr_target": null,
+        "top_repo_pr_share": 0,
+        "templated_pr_ratio": 0,
+        "pr_flood_suspect": false
+      },
+      "scoring": {
+        "sub_scores": {
+          "account_maturity": 0,
+          "original_project_quality": 0,
+          "contribution_quality": 0,
+          "ecosystem_impact": 0,
+          "community_influence": 0,
+          "activity_authenticity": 0
+        },
+        "base_score": 0,
+        "red_flags": [],
+        "risk_assessment": {
+          "version": "v10",
+          "risk_score": 0,
+          "level": "none",
+          "confidence": 0,
+          "applied_penalty": 0,
+          "signals": [
+            {
+              "flag": "no_original_work",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.7,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+              "evidence": {
+                "observed": {
+                  "nonempty_original_repo_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            },
+            {
+              "flag": "ghost_profile",
+              "family": "footprint",
+              "disposition": "note",
+              "severity": 0.6,
+              "confidence": 0,
+              "penalty": 0,
+              "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+              "evidence": {
+                "observed": {
+                  "has_bio": false,
+                  "followers": 0,
+                  "total_stars": 0,
+                  "merged_pr_count": 0
+                },
+                "sample_size": 0,
+                "coverage": {
+                  "repo": 0,
+                  "merged_pr": 0,
+                  "all_pr": 0
+                },
+                "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+              }
+            }
+          ],
+          "coverage": {
+            "repo": 0,
+            "merged_pr": 0,
+            "all_pr": 0
+          }
+        },
+        "risk_notes": [
+          {
+            "flag": "no_original_work",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.7,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "当前公开采集范围内没有非空原创仓库；这只代表足迹有限，不代表作弊。",
+            "evidence": {
+              "observed": {
+                "nonempty_original_repo_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          },
+          {
+            "flag": "ghost_profile",
+            "family": "footprint",
+            "disposition": "note",
+            "severity": 0.6,
+            "confidence": 0,
+            "penalty": 0,
+            "detail": "个人资料和公开项目足迹都很少，当前数据不足以判断行为真实性。",
+            "evidence": {
+              "observed": {
+                "has_bio": false,
+                "followers": 0,
+                "total_stars": 0,
+                "merged_pr_count": 0
+              },
+              "sample_size": 0,
+              "coverage": {
+                "repo": 0,
+                "merged_pr": 0,
+                "all_pr": 0
+              },
+              "window": "bounded public snapshot: up to 200 repositories, up to 50 merged PRs, up to 30 all-state PRs"
+            }
+          }
+        ],
+        "total_penalty": 0,
+        "final_score": 0,
+        "tier": "拉完了",
+        "tier_label": "起步阶段 · 多练多攒作品"
+      }
+    }
+  },
+  "public_negative_zero": true,
+  "helper": [
+    {
+      "name": "p52--1-down2",
+      "value": -450359962737049.8,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -450359962737049.8,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370498
+    },
+    {
+      "name": "p52--1-down",
+      "value": -450359962737049.7,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -450359962737049.7,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370497
+    },
+    {
+      "name": "p52--1-center",
+      "value": -450359962737049.6,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -450359962737049.6,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370496
+    },
+    {
+      "name": "p52--1-up",
+      "value": -450359962737049.56,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -450359962737049.6,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -4503599627370495.5
+    },
+    {
+      "name": "p52--1-up2",
+      "value": -450359962737049.5,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -450359962737049.5,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370495
+    },
+    {
+      "name": "half--1-0--2e-9",
+      "value": -0.0499999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.499999998
+    },
+    {
+      "name": "half--1-0--1e-9",
+      "value": -0.049999999899999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.4999999989999999
+    },
+    {
+      "name": "half--1-0--5e-10",
+      "value": -0.04999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.49999999949999996
+    },
+    {
+      "name": "half--1-0-0",
+      "value": -0.05,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5
+    },
+    {
+      "name": "half--1-0-5e-10",
+      "value": -0.05000000005000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5000000005
+    },
+    {
+      "name": "half--1-0-1e-9",
+      "value": -0.0500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.500000001
+    },
+    {
+      "name": "half--1-0-2e-9",
+      "value": -0.050000000200000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -0.500000002
+    },
+    {
+      "name": "half--1-1--2e-9",
+      "value": -0.1499999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.499999998
+    },
+    {
+      "name": "half--1-1--1e-9",
+      "value": -0.1499999999,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.499999999
+    },
+    {
+      "name": "half--1-1--5e-10",
+      "value": -0.14999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.4999999995
+    },
+    {
+      "name": "half--1-1-0",
+      "value": -0.15,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.5
+    },
+    {
+      "name": "half--1-1-5e-10",
+      "value": -0.15000000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.5000000005
+    },
+    {
+      "name": "half--1-1-1e-9",
+      "value": -0.1500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.500000001
+    },
+    {
+      "name": "half--1-1-2e-9",
+      "value": -0.15000000019999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.5000000019999997
+    },
+    {
+      "name": "half--1-2--2e-9",
+      "value": -0.24999999979999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.499999998
+    },
+    {
+      "name": "half--1-2--1e-9",
+      "value": -0.2499999999,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.499999999
+    },
+    {
+      "name": "half--1-2--5e-10",
+      "value": -0.24999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.4999999995
+    },
+    {
+      "name": "half--1-2-0",
+      "value": -0.25,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5
+    },
+    {
+      "name": "half--1-2-5e-10",
+      "value": -0.25000000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5000000005
+    },
+    {
+      "name": "half--1-2-1e-9",
+      "value": -0.2500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.3,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.500000001
+    },
+    {
+      "name": "half--1-2-2e-9",
+      "value": -0.2500000002,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -0.3,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.500000002
+    },
+    {
+      "name": "half--1-10--2e-9",
+      "value": -1.0499999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.499999998
+    },
+    {
+      "name": "half--1-10--1e-9",
+      "value": -1.0499999999,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.499999999
+    },
+    {
+      "name": "half--1-10--5e-10",
+      "value": -1.04999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.4999999995
+    },
+    {
+      "name": "half--1-10-0",
+      "value": -1.05,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.5
+    },
+    {
+      "name": "half--1-10-5e-10",
+      "value": -1.05000000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.5000000005
+    },
+    {
+      "name": "half--1-10-1e-9",
+      "value": -1.0500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.500000001
+    },
+    {
+      "name": "half--1-10-2e-9",
+      "value": -1.0500000002,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": -1.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.500000002
+    },
+    {
+      "name": "p52-1-down2",
+      "value": 450359962737049.5,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 450359962737049.5,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370495
+    },
+    {
+      "name": "p52-1-down",
+      "value": 450359962737049.56,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 450359962737049.6,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 4503599627370495.5
+    },
+    {
+      "name": "p52-1-center",
+      "value": 450359962737049.6,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 450359962737049.6,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370496
+    },
+    {
+      "name": "p52-1-up",
+      "value": 450359962737049.7,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 450359962737049.7,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370497
+    },
+    {
+      "name": "p52-1-up2",
+      "value": 450359962737049.8,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 450359962737049.8,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370498
+    },
+    {
+      "name": "half-1-0--2e-9",
+      "value": 0.0499999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.499999998
+    },
+    {
+      "name": "half-1-0--1e-9",
+      "value": 0.049999999899999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.4999999989999999
+    },
+    {
+      "name": "half-1-0--5e-10",
+      "value": 0.04999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.49999999949999996
+    },
+    {
+      "name": "half-1-0-0",
+      "value": 0.05,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.5
+    },
+    {
+      "name": "half-1-0-5e-10",
+      "value": 0.05000000005000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.5000000005
+    },
+    {
+      "name": "half-1-0-1e-9",
+      "value": 0.0500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.500000001
+    },
+    {
+      "name": "half-1-0-2e-9",
+      "value": 0.050000000200000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.500000002
+    },
+    {
+      "name": "half-1-1--2e-9",
+      "value": 0.1499999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.499999998
+    },
+    {
+      "name": "half-1-1--1e-9",
+      "value": 0.1499999999,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.499999999
+    },
+    {
+      "name": "half-1-1--5e-10",
+      "value": 0.14999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.4999999995
+    },
+    {
+      "name": "half-1-1-0",
+      "value": 0.15,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.5
+    },
+    {
+      "name": "half-1-1-5e-10",
+      "value": 0.15000000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.5000000005
+    },
+    {
+      "name": "half-1-1-1e-9",
+      "value": 0.1500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.500000001
+    },
+    {
+      "name": "half-1-1-2e-9",
+      "value": 0.15000000019999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.5000000019999997
+    },
+    {
+      "name": "half-1-2--2e-9",
+      "value": 0.24999999979999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.499999998
+    },
+    {
+      "name": "half-1-2--1e-9",
+      "value": 0.2499999999,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.499999999
+    },
+    {
+      "name": "half-1-2--5e-10",
+      "value": 0.24999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.4999999995
+    },
+    {
+      "name": "half-1-2-0",
+      "value": 0.25,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5
+    },
+    {
+      "name": "half-1-2-5e-10",
+      "value": 0.25000000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.2,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5000000005
+    },
+    {
+      "name": "half-1-2-1e-9",
+      "value": 0.2500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.3,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.500000001
+    },
+    {
+      "name": "half-1-2-2e-9",
+      "value": 0.2500000002,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0.3,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.500000002
+    },
+    {
+      "name": "half-1-10--2e-9",
+      "value": 1.0499999998,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.499999998
+    },
+    {
+      "name": "half-1-10--1e-9",
+      "value": 1.0499999999,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.499999999
+    },
+    {
+      "name": "half-1-10--5e-10",
+      "value": 1.04999999995,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.4999999995
+    },
+    {
+      "name": "half-1-10-0",
+      "value": 1.05,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.5
+    },
+    {
+      "name": "half-1-10-5e-10",
+      "value": 1.05000000005,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.5000000005
+    },
+    {
+      "name": "half-1-10-1e-9",
+      "value": 1.0500000001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.500000001
+    },
+    {
+      "name": "half-1-10-2e-9",
+      "value": 1.0500000002,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 1.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.500000002
+    },
+    {
+      "name": "negative-zero",
+      "value": 0,
+      "value_negative_zero": true,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": 0
+    },
+    {
+      "name": "positive-zero",
+      "value": 0,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0
+    },
+    {
+      "name": "negative-small",
+      "value": -0.0001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.001
+    },
+    {
+      "name": "negative-half",
+      "value": -0.05,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5
+    },
+    {
+      "name": "positive-small",
+      "value": 0.0001,
+      "value_negative_zero": false,
+      "digits": 1,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.001
+    },
+    {
+      "name": "p52--1-down2",
+      "value": -45035996273704.98,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -45035996273704.98,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370498
+    },
+    {
+      "name": "p52--1-down",
+      "value": -45035996273704.97,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -45035996273704.97,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370497
+    },
+    {
+      "name": "p52--1-center",
+      "value": -45035996273704.96,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -45035996273704.96,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370496
+    },
+    {
+      "name": "p52--1-up",
+      "value": -45035996273704.95,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -45035996273704.96,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -4503599627370495.5
+    },
+    {
+      "name": "p52--1-up2",
+      "value": -45035996273704.95,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -45035996273704.96,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -4503599627370495.5
+    },
+    {
+      "name": "half--1-0--2e-9",
+      "value": -0.00499999998,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.499999998
+    },
+    {
+      "name": "half--1-0--1e-9",
+      "value": -0.00499999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.49999999900000003
+    },
+    {
+      "name": "half--1-0--5e-10",
+      "value": -0.0049999999950000006,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.49999999950000007
+    },
+    {
+      "name": "half--1-0-0",
+      "value": -0.005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5
+    },
+    {
+      "name": "half--1-0-5e-10",
+      "value": -0.0050000000050000005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5000000005
+    },
+    {
+      "name": "half--1-0-1e-9",
+      "value": -0.00500000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.500000001
+    },
+    {
+      "name": "half--1-0-2e-9",
+      "value": -0.005000000020000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.01,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -0.500000002
+    },
+    {
+      "name": "half--1-1--2e-9",
+      "value": -0.014999999980000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.01,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.499999998
+    },
+    {
+      "name": "half--1-1--1e-9",
+      "value": -0.014999999989999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.01,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.499999999
+    },
+    {
+      "name": "half--1-1--5e-10",
+      "value": -0.014999999994999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.4999999995
+    },
+    {
+      "name": "half--1-1-0",
+      "value": -0.015,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.5
+    },
+    {
+      "name": "half--1-1-5e-10",
+      "value": -0.015000000005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.5000000005
+    },
+    {
+      "name": "half--1-1-1e-9",
+      "value": -0.01500000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.500000001
+    },
+    {
+      "name": "half--1-1-2e-9",
+      "value": -0.01500000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.500000002
+    },
+    {
+      "name": "half--1-2--2e-9",
+      "value": -0.02499999998,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.499999998
+    },
+    {
+      "name": "half--1-2--1e-9",
+      "value": -0.02499999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.499999999
+    },
+    {
+      "name": "half--1-2--5e-10",
+      "value": -0.024999999995,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.4999999995
+    },
+    {
+      "name": "half--1-2-0",
+      "value": -0.025,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5
+    },
+    {
+      "name": "half--1-2-5e-10",
+      "value": -0.025000000005000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5000000005
+    },
+    {
+      "name": "half--1-2-1e-9",
+      "value": -0.025000000010000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.03,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.500000001
+    },
+    {
+      "name": "half--1-2-2e-9",
+      "value": -0.025000000020000003,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.03,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.500000002
+    },
+    {
+      "name": "half--1-10--2e-9",
+      "value": -0.10499999998,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.499999998
+    },
+    {
+      "name": "half--1-10--1e-9",
+      "value": -0.10499999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.499999999
+    },
+    {
+      "name": "half--1-10--5e-10",
+      "value": -0.104999999995,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.4999999995
+    },
+    {
+      "name": "half--1-10-0",
+      "value": -0.105,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.5
+    },
+    {
+      "name": "half--1-10-5e-10",
+      "value": -0.105000000005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.5000000005
+    },
+    {
+      "name": "half--1-10-1e-9",
+      "value": -0.10500000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.11,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.500000001
+    },
+    {
+      "name": "half--1-10-2e-9",
+      "value": -0.10500000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": -0.11,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.500000002
+    },
+    {
+      "name": "p52-1-down2",
+      "value": 45035996273704.95,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 45035996273704.96,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 4503599627370495.5
+    },
+    {
+      "name": "p52-1-down",
+      "value": 45035996273704.95,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 45035996273704.96,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 4503599627370495.5
+    },
+    {
+      "name": "p52-1-center",
+      "value": 45035996273704.96,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 45035996273704.96,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370496
+    },
+    {
+      "name": "p52-1-up",
+      "value": 45035996273704.97,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 45035996273704.97,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370497
+    },
+    {
+      "name": "p52-1-up2",
+      "value": 45035996273704.98,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 45035996273704.98,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370498
+    },
+    {
+      "name": "half-1-0--2e-9",
+      "value": 0.00499999998,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.499999998
+    },
+    {
+      "name": "half-1-0--1e-9",
+      "value": 0.00499999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.49999999900000003
+    },
+    {
+      "name": "half-1-0--5e-10",
+      "value": 0.0049999999950000006,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.49999999950000007
+    },
+    {
+      "name": "half-1-0-0",
+      "value": 0.005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.5
+    },
+    {
+      "name": "half-1-0-5e-10",
+      "value": 0.0050000000050000005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.5000000005
+    },
+    {
+      "name": "half-1-0-1e-9",
+      "value": 0.00500000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.500000001
+    },
+    {
+      "name": "half-1-0-2e-9",
+      "value": 0.005000000020000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.01,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.500000002
+    },
+    {
+      "name": "half-1-1--2e-9",
+      "value": 0.014999999980000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.01,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.499999998
+    },
+    {
+      "name": "half-1-1--1e-9",
+      "value": 0.014999999989999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.01,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.499999999
+    },
+    {
+      "name": "half-1-1--5e-10",
+      "value": 0.014999999994999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.4999999995
+    },
+    {
+      "name": "half-1-1-0",
+      "value": 0.015,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.5
+    },
+    {
+      "name": "half-1-1-5e-10",
+      "value": 0.015000000005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.5000000005
+    },
+    {
+      "name": "half-1-1-1e-9",
+      "value": 0.01500000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.500000001
+    },
+    {
+      "name": "half-1-1-2e-9",
+      "value": 0.01500000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.500000002
+    },
+    {
+      "name": "half-1-2--2e-9",
+      "value": 0.02499999998,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.499999998
+    },
+    {
+      "name": "half-1-2--1e-9",
+      "value": 0.02499999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.499999999
+    },
+    {
+      "name": "half-1-2--5e-10",
+      "value": 0.024999999995,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.4999999995
+    },
+    {
+      "name": "half-1-2-0",
+      "value": 0.025,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5
+    },
+    {
+      "name": "half-1-2-5e-10",
+      "value": 0.025000000005000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.02,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5000000005
+    },
+    {
+      "name": "half-1-2-1e-9",
+      "value": 0.025000000010000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.03,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.500000001
+    },
+    {
+      "name": "half-1-2-2e-9",
+      "value": 0.025000000020000003,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.03,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.500000002
+    },
+    {
+      "name": "half-1-10--2e-9",
+      "value": 0.10499999998,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.499999998
+    },
+    {
+      "name": "half-1-10--1e-9",
+      "value": 0.10499999999,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.499999999
+    },
+    {
+      "name": "half-1-10--5e-10",
+      "value": 0.104999999995,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.4999999995
+    },
+    {
+      "name": "half-1-10-0",
+      "value": 0.105,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.5
+    },
+    {
+      "name": "half-1-10-5e-10",
+      "value": 0.105000000005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.1,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.5000000005
+    },
+    {
+      "name": "half-1-10-1e-9",
+      "value": 0.10500000001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.11,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.500000001
+    },
+    {
+      "name": "half-1-10-2e-9",
+      "value": 0.10500000002,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0.11,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.500000002
+    },
+    {
+      "name": "negative-zero",
+      "value": 0,
+      "value_negative_zero": true,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": 0
+    },
+    {
+      "name": "positive-zero",
+      "value": 0,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0
+    },
+    {
+      "name": "negative-small",
+      "value": -0.00001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.001
+    },
+    {
+      "name": "negative-half",
+      "value": -0.005,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5
+    },
+    {
+      "name": "positive-small",
+      "value": 0.00001,
+      "value_negative_zero": false,
+      "digits": 2,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.001
+    },
+    {
+      "name": "p52--1-down2",
+      "value": -450359962737.0498,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -450359962737.0498,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370498
+    },
+    {
+      "name": "p52--1-down",
+      "value": -450359962737.0497,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -450359962737.0497,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370497
+    },
+    {
+      "name": "p52--1-center",
+      "value": -450359962737.0496,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -450359962737.0496,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370496
+    },
+    {
+      "name": "p52--1-up",
+      "value": -450359962737.04956,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -450359962737.0496,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -4503599627370495.5
+    },
+    {
+      "name": "p52--1-up2",
+      "value": -450359962737.0495,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -450359962737.0495,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -4503599627370495
+    },
+    {
+      "name": "half--1-0--2e-9",
+      "value": -0.0000499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.499999998
+    },
+    {
+      "name": "half--1-0--1e-9",
+      "value": -0.0000499999999,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.499999999
+    },
+    {
+      "name": "half--1-0--5e-10",
+      "value": -0.00004999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.4999999995
+    },
+    {
+      "name": "half--1-0-0",
+      "value": -0.00005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5
+    },
+    {
+      "name": "half--1-0-5e-10",
+      "value": -0.000050000000050000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5000000005
+    },
+    {
+      "name": "half--1-0-1e-9",
+      "value": -0.000050000000099999994,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.500000001
+    },
+    {
+      "name": "half--1-0-2e-9",
+      "value": -0.000050000000200000006,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -0.500000002
+    },
+    {
+      "name": "half--1-1--2e-9",
+      "value": -0.0001499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.499999998
+    },
+    {
+      "name": "half--1-1--1e-9",
+      "value": -0.00014999999989999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.499999999
+    },
+    {
+      "name": "half--1-1--5e-10",
+      "value": -0.00014999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.4999999995
+    },
+    {
+      "name": "half--1-1-0",
+      "value": -0.00015,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.4999999999999998
+    },
+    {
+      "name": "half--1-1-5e-10",
+      "value": -0.00015000000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -1.5000000005
+    },
+    {
+      "name": "half--1-1-1e-9",
+      "value": -0.00015000000010000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.500000001
+    },
+    {
+      "name": "half--1-1-2e-9",
+      "value": -0.0001500000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -1.500000002
+    },
+    {
+      "name": "half--1-2--2e-9",
+      "value": -0.0002499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.499999998
+    },
+    {
+      "name": "half--1-2--1e-9",
+      "value": -0.0002499999999,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.499999999
+    },
+    {
+      "name": "half--1-2--5e-10",
+      "value": -0.00024999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.4999999995
+    },
+    {
+      "name": "half--1-2-0",
+      "value": -0.00025,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5
+    },
+    {
+      "name": "half--1-2-5e-10",
+      "value": -0.00025000000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5000000005
+    },
+    {
+      "name": "half--1-2-1e-9",
+      "value": -0.0002500000001,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -2.5000000009999996
+    },
+    {
+      "name": "half--1-2-2e-9",
+      "value": -0.0002500000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0003,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -2.500000002
+    },
+    {
+      "name": "half--1-10--2e-9",
+      "value": -0.0010499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.499999998
+    },
+    {
+      "name": "half--1-10--1e-9",
+      "value": -0.0010499999999,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.499999999
+    },
+    {
+      "name": "half--1-10--5e-10",
+      "value": -0.00104999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.001,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.4999999995
+    },
+    {
+      "name": "half--1-10-0",
+      "value": -0.00105,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.001,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.5
+    },
+    {
+      "name": "half--1-10-5e-10",
+      "value": -0.00105000000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.001,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -10.5000000005
+    },
+    {
+      "name": "half--1-10-1e-9",
+      "value": -0.0010500000001,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0011,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.500000001
+    },
+    {
+      "name": "half--1-10-2e-9",
+      "value": -0.0010500000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": -0.0011,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": -10.500000002000002
+    },
+    {
+      "name": "p52-1-down2",
+      "value": 450359962737.0495,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 450359962737.0495,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370495
+    },
+    {
+      "name": "p52-1-down",
+      "value": 450359962737.04956,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 450359962737.0496,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 4503599627370495.5
+    },
+    {
+      "name": "p52-1-center",
+      "value": 450359962737.0496,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 450359962737.0496,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370496
+    },
+    {
+      "name": "p52-1-up",
+      "value": 450359962737.0497,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 450359962737.0497,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370497
+    },
+    {
+      "name": "p52-1-up2",
+      "value": 450359962737.0498,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 450359962737.0498,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 4503599627370498
+    },
+    {
+      "name": "half-1-0--2e-9",
+      "value": 0.0000499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.499999998
+    },
+    {
+      "name": "half-1-0--1e-9",
+      "value": 0.0000499999999,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.499999999
+    },
+    {
+      "name": "half-1-0--5e-10",
+      "value": 0.00004999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.4999999995
+    },
+    {
+      "name": "half-1-0-0",
+      "value": 0.00005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.5
+    },
+    {
+      "name": "half-1-0-5e-10",
+      "value": 0.000050000000050000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.5000000005
+    },
+    {
+      "name": "half-1-0-1e-9",
+      "value": 0.000050000000099999994,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 0.500000001
+    },
+    {
+      "name": "half-1-0-2e-9",
+      "value": 0.000050000000200000006,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.500000002
+    },
+    {
+      "name": "half-1-1--2e-9",
+      "value": 0.0001499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.499999998
+    },
+    {
+      "name": "half-1-1--1e-9",
+      "value": 0.00014999999989999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.499999999
+    },
+    {
+      "name": "half-1-1--5e-10",
+      "value": 0.00014999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.4999999995
+    },
+    {
+      "name": "half-1-1-0",
+      "value": 0.00015,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.4999999999999998
+    },
+    {
+      "name": "half-1-1-5e-10",
+      "value": 0.00015000000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 1.5000000005
+    },
+    {
+      "name": "half-1-1-1e-9",
+      "value": 0.00015000000010000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.500000001
+    },
+    {
+      "name": "half-1-1-2e-9",
+      "value": 0.0001500000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 1.500000002
+    },
+    {
+      "name": "half-1-2--2e-9",
+      "value": 0.0002499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.499999998
+    },
+    {
+      "name": "half-1-2--1e-9",
+      "value": 0.0002499999999,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.499999999
+    },
+    {
+      "name": "half-1-2--5e-10",
+      "value": 0.00024999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.4999999995
+    },
+    {
+      "name": "half-1-2-0",
+      "value": 0.00025,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5
+    },
+    {
+      "name": "half-1-2-5e-10",
+      "value": 0.00025000000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5000000005
+    },
+    {
+      "name": "half-1-2-1e-9",
+      "value": 0.0002500000001,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0002,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 2.5000000009999996
+    },
+    {
+      "name": "half-1-2-2e-9",
+      "value": 0.0002500000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0003,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 2.500000002
+    },
+    {
+      "name": "half-1-10--2e-9",
+      "value": 0.0010499999998,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.499999998
+    },
+    {
+      "name": "half-1-10--1e-9",
+      "value": 0.0010499999999,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.001,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.499999999
+    },
+    {
+      "name": "half-1-10--5e-10",
+      "value": 0.00104999999995,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.001,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.4999999995
+    },
+    {
+      "name": "half-1-10-0",
+      "value": 0.00105,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.001,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.5
+    },
+    {
+      "name": "half-1-10-5e-10",
+      "value": 0.00105000000005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.001,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": 10.5000000005
+    },
+    {
+      "name": "half-1-10-1e-9",
+      "value": 0.0010500000001,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0011,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.500000001
+    },
+    {
+      "name": "half-1-10-2e-9",
+      "value": 0.0010500000002,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0.0011,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 10.500000002000002
+    },
+    {
+      "name": "negative-zero",
+      "value": 0,
+      "value_negative_zero": true,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": 0
+    },
+    {
+      "name": "positive-zero",
+      "value": 0,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0
+    },
+    {
+      "name": "negative-small",
+      "value": -1e-7,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": true,
+      "branch": "math-round",
+      "scaled": -0.001
+    },
+    {
+      "name": "negative-half",
+      "value": -0.00005,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "half-even",
+      "scaled": -0.5
+    },
+    {
+      "name": "positive-small",
+      "value": 1e-7,
+      "value_negative_zero": false,
+      "digits": 4,
+      "result": 0,
+      "result_negative_zero": false,
+      "branch": "math-round",
+      "scaled": 0.001
+    }
+  ]
+}
