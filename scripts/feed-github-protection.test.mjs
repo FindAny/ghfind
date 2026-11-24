@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { applyPlan, buildPlan, captureState, environmentTargets, hash, owner, repository, requiredPRJobs, rulesetId, validatePRChecks, verifyExisting, verifyExistingState } from './feed-github-protection.mjs';
 
-const workflow = readFileSync('.github/workflows/scoring.yml', 'utf8');
+const workflow = readFileSync('.github/workflows/scoring.yml', 'utf8').replace(/\r\n/g, '\n');
 const clone = value => JSON.parse(JSON.stringify(value));
 function server() {
   const data = {
