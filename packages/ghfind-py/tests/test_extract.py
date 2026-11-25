@@ -2,6 +2,8 @@
 
 from datetime import datetime, timezone
 
+import pytest
+
 from ghfind._extract import (
     compute_impact_from_contrib_map,
     compute_impact_quality_signals,
@@ -10,6 +12,7 @@ from ghfind._extract import (
     is_doc_like_impact_pr,
     original_repo_quality_score,
     parse_github_noreply_login,
+    parse_readme_features,
     resolve_first_commit_github_login,
 )
 
@@ -196,3 +199,40 @@ def test_impact_cap_requires_representative_repository_coverage():
     assert compute_impact_quality_signals(broad, 100, "alice")["impact_quality_cap"] is None
     concentrated = [docs(f"org/project-{0 if i < 10 else i}") for i in range(12)]
     assert compute_impact_quality_signals(concentrated, 12, "alice")["impact_quality_cap"] is None
+
+
+_INTRO_PREFIX = "文" * 348
+_SECTION_PREFIX = "a" * 218
+_TITLE_PREFIX = "a" * 1491
+_PREFIX_WITH_EMOJI = f"{'文' * 347}🚀"
+
+
+@pytest.mark.parametrize(
+    "name,markdown,expected",
+    [
+        ("an intro", f"# Project\n\n{_INTRO_PREFIX}🚀end", f"Intro: {_INTRO_PREFIX}… Sections:"),
+        (
+            "a section",
+            f"# Project\n\nOverview.\n\n## Usage\n\n{_SECTION_PREFIX}🚀end",
+            f"Usage: {_SECTION_PREFIX}… Signals: usage",
+        ),
+        ("the full summary", f"# {_TITLE_PREFIX}🚀end", f"Title: {_TITLE_PREFIX}…"),
+        (
+            "an intro where the emoji fits before the ellipsis",
+            f"# Project\n\n{_PREFIX_WITH_EMOJI}end",
+            f"Intro: {_PREFIX_WITH_EMOJI}… Sections:",
+        ),
+        (
+            "an intro at the length limit",
+            f"# Project\n\n{_INTRO_PREFIX}🚀",
+            f"Intro: {_INTRO_PREFIX}🚀 Sections:",
+        ),
+    ],
+)
+def test_parse_readme_features_preserves_unicode(name, markdown, expected):
+    features = parse_readme_features(markdown)
+    summary = features["prompt_summary"]
+    assert expected in summary
+    utf16_len = sum(2 if ord(c) > 0xFFFF else 1 for c in summary)
+    assert utf16_len <= 1500
+
