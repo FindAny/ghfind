@@ -74,6 +74,7 @@ export async function captureState(request = githubRequest) {
 }
 
 export function validatePRChecks(workflow = readFileSync(resolve(prWorkflowPath), 'utf8')) {
+  workflow = workflow.replace(/\r\n/g, '\n');
   assert(/^  pull_request:\s*$/m.test(workflow), 'CI must run PR merge compatibility checks');
   assert(!/^  pull_request:\s*\n    (paths|paths-ignore|branches|branches-ignore):/m.test(workflow), 'Required PR checks must run for every pull request (no path or branch filters)');
   const jobs = workflow.slice(workflow.indexOf('\njobs:\n'));
