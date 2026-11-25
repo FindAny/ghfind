@@ -89,6 +89,14 @@ PR, `.github/compose/check-hub-contract.mjs` fails if a `pnpm` script or `script
 file that a hub workflow calls is missing. It also runs ci.yml's Application-checks
 `node:test` suites, which include the production migration approval guard.
 
+The same order applies when a server script needs a new input from a hub workflow.
+(2026-11-24: the Feed cutover smoke read a public GitHub identity anonymously, which
+GitHub rejects with 403 from hosted runners, so the server v1.0.17 cutover failed and
+the Feed stayed paused. The hub now passes `GITHUB_TOKEN` to that step and the server
+uses it.) `Deploy production (Cloudflare)` and `Deploy apps (production)` start by
+`workflow_run`, so GitHub runs their workflow files from `main`, not from the `deploy`
+commit: a change to those two files takes effect once it is merged.
+
 ### compose
 
 `Compose release` (Actions → Compose release → Run workflow, or `gh workflow run`) has

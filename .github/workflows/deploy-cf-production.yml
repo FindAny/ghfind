@@ -329,6 +329,11 @@ jobs:
           node scripts/feed-production-assessment-checkpoint.mjs "$RELEASE_SHA" ops/feed-production-assessment-checkpoint.json ops/feed-production-assessment-carryover.json "$RUNNER_TEMP/feed-production-evidence/assessment-result.json"
       - name: Verify bounded authenticated Go service contracts before opening the gateway
         if: steps.current.outputs.current == 'true'
+        env:
+          # The smoke reads the service account's public GitHub identity. GitHub
+          # answers 403 to anonymous REST calls from hosted-runner addresses, so
+          # authenticate with the job token; the read needs none of its permissions.
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           node scripts/feed-production-smoke.mjs --mode all --runtime-mode baseline --release-sha "$RELEASE_SHA" --image "${{ steps.image.outputs.reference }}" --writer-epoch 1 --profile cf_d1_r2 --output "$RUNNER_TEMP/feed-production-evidence/service-smoke.json" --execute
       - name: Record gateway admission intent before starting the cutover
