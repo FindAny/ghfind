@@ -10,6 +10,8 @@ from __future__ import annotations
 import math
 from typing import Any, Dict, List, Mapping, Optional, Tuple
 
+from ._rounding import round_half_even
+
 RISK_VERSION = "v10"
 TOTAL_CAP = 25.0
 CONTRIBUTION_CAP = 16.0
@@ -74,9 +76,9 @@ def _coverage(m: Mapping[str, Any]) -> Dict[str, float]:
     all_sample = max(0.0, _finite(m.get("recent_pr_sample")))
     all_total = max(1.0, min(_finite(m.get("total_pr_count")), 30.0))
     return {
-        "repo": round(_clamp01(fetched / public_repos), 4),
-        "merged_pr": round(_clamp01(merged_sample / merged_total), 4),
-        "all_pr": round(_clamp01(all_sample / all_total), 4),
+        "repo": round_half_even(_clamp01(fetched / public_repos), 4),
+        "merged_pr": round_half_even(_clamp01(merged_sample / merged_total), 4),
+        "all_pr": round_half_even(_clamp01(all_sample / all_total), 4),
     }
 
 
@@ -111,8 +113,8 @@ def _candidate(
             "flag": flag,
             "family": family,
             "disposition": "note",
-            "severity": round(_clamp01(severity), 4),
-            "confidence": round(_clamp01(confidence), 4),
+            "severity": round_half_even(_clamp01(severity), 4),
+            "confidence": round_half_even(_clamp01(confidence), 4),
             "penalty": 0.0,
             "detail": detail,
             "evidence": _evidence(m, observed, sample, threshold),
@@ -135,15 +137,15 @@ def _apply_cap(candidates: List[Dict[str, Any]], family: str, cap: float) -> flo
     raw_total = sum(item["raw"] for item in active)
     if raw_total <= 0:
         return 0.0
-    target = round(min(cap, raw_total), 2)
+    target = round_half_even(min(cap, raw_total), 2)
     factor = target / raw_total
     assigned = 0.0
     for index, item in enumerate(active):
-        penalty = round(max(0.0, target - assigned), 2) if index == len(active) - 1 else round(item["raw"] * factor, 2)
+        penalty = round_half_even(max(0.0, target - assigned), 2) if index == len(active) - 1 else round_half_even(item["raw"] * factor, 2)
         item["signal"]["penalty"] = penalty
         if penalty > 0:
             item["signal"]["disposition"] = "penalty"
-        assigned = round(assigned + penalty, 2)
+        assigned = round_half_even(assigned + penalty, 2)
     return assigned
 
 
@@ -195,7 +197,7 @@ def assess_risk(m: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, An
     trivial_raw = 8 * _clamp01((trivial_rate - TRIVIAL_RATE) / TRIVIAL_TRANSITION) * _sample_factor(merged_sample) if merged_sample >= MIN_CONTRIBUTION_SAMPLE and trivial_rate > TRIVIAL_RATE else 0.0
     if merged_sample > 0 and external_trivial > 0 and external_trivial / merged_sample > 0.3:
         detail = "外部热门仓库中的低实质 PR 比例偏高，但合并样本不足 20 个，仅作风险提示。" if merged_sample < MIN_CONTRIBUTION_SAMPLE else "外部热门仓库中的低实质 PR 比例达到量化阈值；仅统计他人仓库，不惩罚正常自提 PR。"
-        _add_contribution(m, candidates, "trivial_pr_farming", trivial_raw, trivial_severity, detail, {"external_trivial_pr_count": external_trivial, "merged_pr_sample": merged_sample, "smoothed_rate": round(trivial_rate, 4)}, merged_sample, {"minimum_sample": MIN_CONTRIBUTION_SAMPLE, "smoothed_rate": TRIVIAL_RATE}, coverage_confidence)
+        _add_contribution(m, candidates, "trivial_pr_farming", trivial_raw, trivial_severity, detail, {"external_trivial_pr_count": external_trivial, "merged_pr_sample": merged_sample, "smoothed_rate": round_half_even(trivial_rate, 4)}, merged_sample, {"minimum_sample": MIN_CONTRIBUTION_SAMPLE, "smoothed_rate": TRIVIAL_RATE}, coverage_confidence)
 
     rejection_measured = m.get("maintainer_closed_unmerged_pr_count") is not None
     rejected = max(0.0, _finite(m.get("maintainer_closed_unmerged_pr_count"))) if rejection_measured else 0.0
@@ -206,7 +208,7 @@ def assess_risk(m: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, An
     rejection_raw = 4 * _clamp01((rejection_lower - REJECTION_WILSON_LOWER) / REJECTION_WILSON_LOWER) if rejection_measured and decided >= MIN_REJECTION_DECISIONS and rejection_lower >= REJECTION_WILSON_LOWER else 0.0
     if rejection_measured and decided > 0 and rejection_rate >= REJECTION_WILSON_LOWER:
         detail = "维护者关闭未合并的 PR 比例偏高，但样本量或 Wilson 95% 下界未达到扣分门槛，仅作风险提示。" if decided < MIN_REJECTION_DECISIONS or rejection_lower < REJECTION_WILSON_LOWER else "维护者关闭未合并的 PR 的 Wilson 95% 下界达到量化阈值。"
-        _add_contribution(m, candidates, "high_pr_rejection", rejection_raw, rejection_severity, detail, {"maintainer_closed_unmerged_pr_count": rejected, "merged_pr_count": _finite(m.get("merged_pr_count")), "decided_pr_count": decided, "wilson_lower": round(rejection_lower, 4)}, decided, {"minimum_decisions": MIN_REJECTION_DECISIONS, "wilson_lower": REJECTION_WILSON_LOWER}, coverage_confidence)
+        _add_contribution(m, candidates, "high_pr_rejection", rejection_raw, rejection_severity, detail, {"maintainer_closed_unmerged_pr_count": rejected, "merged_pr_count": _finite(m.get("merged_pr_count")), "decided_pr_count": decided, "wilson_lower": round_half_even(rejection_lower, 4)}, decided, {"minimum_decisions": MIN_REJECTION_DECISIONS, "wilson_lower": REJECTION_WILSON_LOWER}, coverage_confidence)
 
     flood_sample = max(0.0, _finite(m.get("recent_pr_sample")))
     share = _clamp01(_finite(m.get("top_repo_pr_share")))
@@ -230,7 +232,7 @@ def assess_risk(m: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, An
     follow_raw = 4 * _clamp01((FOLLOW_RATIO - follower_ratio) / FOLLOW_RATIO) * _clamp01((following - FOLLOW_MINIMUM) / 3000) if following >= FOLLOW_MINIMUM and follower_ratio < FOLLOW_RATIO else 0.0
     follow: Optional[Dict[str, Any]] = None
     if follow_observed:
-        follow = _candidate(m, "follow_farming", "social", 0.0, _clamp01((FOLLOW_RATIO - follower_ratio) / FOLLOW_RATIO), coverage_confidence, "关注数量与粉丝数量明显失衡；当前只有单次快照，没有关注增长时间序列，不能单独判定刷粉。", {"following": following, "followers": followers, "follower_ratio": round(follower_ratio, 4)}, threshold={"minimum_following": FOLLOW_MINIMUM, "follower_ratio": FOLLOW_RATIO})
+        follow = _candidate(m, "follow_farming", "social", 0.0, _clamp01((FOLLOW_RATIO - follower_ratio) / FOLLOW_RATIO), coverage_confidence, "关注数量与粉丝数量明显失衡；当前只有单次快照，没有关注增长时间序列，不能单独判定刷粉。", {"following": following, "followers": followers, "follower_ratio": round_half_even(follower_ratio, 4)}, threshold={"minimum_following": FOLLOW_MINIMUM, "follower_ratio": FOLLOW_RATIO})
         candidates.append(follow)
 
     engagement = m.get("top_repo_engagement_ratio")
@@ -252,7 +254,7 @@ def assess_risk(m: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, An
 
     contribution_penalty = _apply_cap(candidates, "contribution", CONTRIBUTION_CAP)
     social_penalty = _apply_cap(candidates, "social", SOCIAL_CAP)
-    total_penalty = round(min(TOTAL_CAP, contribution_penalty + social_penalty), 2)
+    total_penalty = round_half_even(min(TOTAL_CAP, contribution_penalty + social_penalty), 2)
     signals = [item["signal"] for item in candidates]
     notes = []
     red_flags = []
@@ -264,13 +266,13 @@ def assess_risk(m: Mapping[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, An
             note["penalty"] = 0.0
             note["disposition"] = "note"
             notes.append(note)
-    risk_score = round(total_penalty / TOTAL_CAP * 100, 2)
+    risk_score = round_half_even(total_penalty / TOTAL_CAP * 100, 2)
     level = "high" if risk_score >= HIGH_MINIMUM else "review" if risk_score >= REVIEW_MINIMUM else "none"
     assessment = {
         "version": RISK_VERSION,
         "risk_score": risk_score,
         "level": level,
-        "confidence": round(_confidence(coverage) * 100, 2),
+        "confidence": round_half_even(_confidence(coverage) * 100, 2),
         "applied_penalty": total_penalty,
         "signals": signals,
         "coverage": coverage,
